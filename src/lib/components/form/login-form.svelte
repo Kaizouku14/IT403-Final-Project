@@ -1,6 +1,5 @@
 <script lang="ts">
-	import GalleryVerticalEndIcon from '@lucide/svelte/icons/gallery-vertical-end';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import { CirclePoundSterling } from '@lucide/svelte/icons';
 	import {
 		FieldGroup,
 		Field,
@@ -10,50 +9,53 @@
 	} from '$lib/components/ui/field/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { cn, type WithElementRef } from '$lib/utils.js';
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		...restProps
-	}: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props();
-	const id = $props.id();
+	export let signInWithGoogle: () => void;
+	export let signInWithRoblox: () => void;
 </script>
 
-<div class={cn('flex flex-col gap-6', className)} bind:this={ref} {...restProps}>
+<div class="flex flex-col gap-6">
 	<form>
 		<FieldGroup>
 			<div class="flex flex-col items-center gap-2 text-center">
 				<a href="##" class="flex flex-col items-center gap-2 font-medium">
 					<div class="flex size-8 items-center justify-center rounded-md">
-						<GalleryVerticalEndIcon class="size-6" />
+						<CirclePoundSterling class="size-8" />
 					</div>
-					<span class="sr-only">Acme Inc.</span>
+					<span class="sr-only">VaultTrack.</span>
 				</a>
-				<h1 class="text-xl font-bold">Welcome to Acme Inc.</h1>
+				<h1 class="text-xl font-bold">Welcome to VaultTrack .</h1>
 				<FieldDescription>
 					Don't have an account? <a href="##">Sign up</a>
 				</FieldDescription>
 			</div>
 			<Field>
-				<FieldLabel for="email-{id}">Email</FieldLabel>
-				<Input id="email-{id}" type="email" placeholder="m@example.com" required />
+				<FieldLabel for="email">Email</FieldLabel>
+				<Input id="email" type="email" placeholder="m@example.com" required />
 			</Field>
 			<Field>
 				<Button type="submit">Login</Button>
 			</Field>
 			<FieldSeparator>Or</FieldSeparator>
 			<Field class="grid gap-4 sm:grid-cols-2">
-				<Button variant="outline" type="button">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-						<path
-							d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"
-							fill="currentColor"
-						/>
-					</svg>
-					Continue with Apple
+				<Button variant="outline" type="button" onclick={signInWithRoblox}>
+					<svg
+						version="1.1"
+						id="svg10"
+						x="0px"
+						y="0px"
+						viewBox="0 0 302.7 302.7"
+						width="1.2em"
+						height="1.2em"
+						fill="currentColor"
+						><path
+							id="path20"
+							d="M120.5,271.7c-110.9-28.6-120-31-119.9-31.5 C0.7,239.6,62.1,0.5,62.2,0.4c0,0,54,13.8,119.9,30.8S302.1,62,302.2,62c0.2,0,0.2,0.4,0.1,0.9c-0.2,1.5-61.5,239.3-61.7,239.5  C240.6,302.5,186.5,288.7,120.5,271.7z M174.9,158c3.2-12.6,5.9-23.1,6-23.4c0.1-0.5-2.3-1.2-23.2-6.6c-12.8-3.3-23.5-5.9-23.6-5.8  c-0.3,0.3-12.1,46.6-12,46.7c0.2,0.2,46.7,12.2,46.8,12.1C168.9,180.9,171.6,170.6,174.9,158L174.9,158z"
+						></path></svg
+					>
+					Continue with Roblox
 				</Button>
-				<Button variant="outline" type="button">
+				<Button variant="outline" type="button" onclick={signInWithGoogle}>
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 						<path
 							d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
