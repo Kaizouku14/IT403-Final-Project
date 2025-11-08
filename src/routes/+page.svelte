@@ -1,5 +1,4 @@
 <script lang="ts">
-	import ThemeToggler from '$lib/components/theme/theme-toggler.svelte';
 </script>
 
 <svelte:head>
