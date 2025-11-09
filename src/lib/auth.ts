@@ -18,11 +18,13 @@ export const auth = betterAuth({
 		google: {
 			prompt: 'select_account',
 			clientId: env.GOOGLE_CLIENT_ID,
-			clientSecret: env.GOOGLE_CLIENT_SECRET
+			clientSecret: env.GOOGLE_CLIENT_SECRET,
+			disableImplicitSignUp: true
 		},
 		roblox: {
 			clientId: env.ROBLOX_CLIENT_ID,
-			clientSecret: env.ROBLOX_CLIENT_SECRET
+			clientSecret: env.ROBLOX_CLIENT_SECRET,
+			disableImplicitSignUp: true
 		}
 	},
 	session: {
