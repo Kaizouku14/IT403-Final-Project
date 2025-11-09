@@ -14,9 +14,9 @@
 	import { toast } from 'svelte-sonner';
 	import { authClient } from '$lib/auth-client';
 
-	let email = '';
-	let password = '';
-	let loading = false;
+	let email = $state('');
+	let password = $state('');
+	let loading = $state(false);
 
 	const handleEmailLogin = async (e: Event) => {
 		e.preventDefault();

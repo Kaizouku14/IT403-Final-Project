@@ -7,7 +7,7 @@
 </script>
 
 <div class="app">
-	<main class="h-screen p-4">
+	<main class="h-screen p-6">
 		<ModeWatcher />
 		<Toaster />
 		{@render children()}
