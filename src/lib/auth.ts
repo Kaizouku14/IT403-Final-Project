@@ -9,6 +9,9 @@ export const auth = betterAuth({
 	database: drizzleAdapter(db, {
 		provider: 'sqlite'
 	}),
+	emailAndPassword: {
+		enabled: true
+	},
 	socialProviders: {
 		google: {
 			prompt: 'select_account',
@@ -18,6 +21,12 @@ export const auth = betterAuth({
 		roblox: {
 			clientId: env.ROBLOX_CLIENT_ID,
 			clientSecret: env.ROBLOX_CLIENT_SECRET
+		}
+	},
+	session: {
+		cookieCache: {
+			enabled: true,
+			maxAge: 5 * 60 // Cache duration in seconds
 		}
 	},
 	plugins: [sveltekitCookies(getRequestEvent)]
