@@ -1,13 +1,12 @@
-import type { InferSelectModel } from 'drizzle-orm';
-
+import type { Session, User } from 'better-auth';
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
 declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			session: InferSelectModel<typeof schema.session>;
-			user: InferSelectModel<typeof schema.user>;
+			session: Session;
+			user: User;
 		}
 		// interface PageData {}
 		// interface PageState {}

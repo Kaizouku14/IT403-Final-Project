@@ -9,6 +9,7 @@
 	} from '$lib/components/ui/field/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
+	import { pageRoutes } from '$lib/helper/page-routes';
 
 	export let signInWithGoogle: () => void;
 	export let signInWithRoblox: () => void;
@@ -18,7 +19,7 @@
 	<form>
 		<FieldGroup>
 			<div class="flex flex-col items-center gap-2 text-center">
-				<a href="##" class="flex flex-col items-center gap-2 font-medium">
+				<a href={pageRoutes.LOGIN} class="flex flex-col items-center gap-2 font-medium">
 					<div class="flex size-8 items-center justify-center rounded-md">
 						<CirclePoundSterling class="size-8" />
 					</div>
@@ -26,13 +27,19 @@
 				</a>
 				<h1 class="text-xl font-bold">Welcome to VaultTrack .</h1>
 				<FieldDescription>
-					Don't have an account? <a href="##">Sign up</a>
+					Don't have an account? <a href={pageRoutes.SIGNUP}>Sign up</a>
 				</FieldDescription>
 			</div>
-			<Field>
-				<FieldLabel for="email">Email</FieldLabel>
-				<Input id="email" type="email" placeholder="m@example.com" required />
-			</Field>
+			<div class="flex flex-col gap-4">
+				<Field>
+					<FieldLabel for="email">Email</FieldLabel>
+					<Input id="email" type="email" placeholder="m@example.com" required />
+				</Field>
+				<Field>
+					<FieldLabel for="password">Password</FieldLabel>
+					<Input id="password" type="password" placeholder="••••••••" required />
+				</Field>
+			</div>
 			<Field>
 				<Button type="submit">Login</Button>
 			</Field>

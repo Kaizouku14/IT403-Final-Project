@@ -1,21 +1,37 @@
 <script lang="ts">
 	import { authClient } from '$lib/auth-client';
 	import LoginForm from '$lib/components/form/login-form.svelte';
+	import { pageRoutes, socialProviders } from '$lib/helper/enums';
+	import { toast } from 'svelte-sonner';
 
 	const handleGoogleSignIn = async () => {
-		const data = await authClient.signIn.social({
-			provider: 'google'
-		});
+		try {
+			const data = await authClient.signIn.social({
+				provider: socialProviders.GOOGLE,
+				callbackURL: pageRoutes.DASHBOARD
+			});
 
-		console.log(data);
+			if (data.error) {
+				throw new Error('Failed to sign in with Google');
+			}
+		} catch (error) {
+			toast.error((error as Error).message);
+		}
 	};
 
 	const handleRobloxSignin = async () => {
-		const data = await authClient.signIn.social({
-			provider: 'roblox'
-		});
+		try {
+			const data = await authClient.signIn.social({
+				provider: socialProviders.ROBLOX,
+				callbackURL: pageRoutes.DASHBOARD
+			});
 
-		console.log(data);
+			if (data.error) {
+				throw new Error('Failed to sign in with Roblox');
+			}
+		} catch (error) {
+			toast.error((error as Error).message);
+		}
 	};
 </script>
 
