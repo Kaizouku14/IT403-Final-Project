@@ -6,6 +6,8 @@ import { getRequestEvent } from '$app/server';
 import { env } from '$env/dynamic/private';
 
 export const auth = betterAuth({
+	baseURL: env.BETTER_AUTH_URL,
+	trustedOrigins: [env.BETTER_AUTH_URL!],
 	database: drizzleAdapter(db, {
 		provider: 'sqlite'
 	}),
