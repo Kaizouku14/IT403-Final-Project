@@ -5,14 +5,19 @@
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import { Lock } from '@lucide/svelte';
+	import { Spinner } from '$lib/components/ui/spinner';
+	import { toast } from 'svelte-sonner';
 
 	export let data: { form: SuperValidated<Infer<FormSchema>> };
 
 	const form = superForm(data.form, {
-		validators: zod4Client(formSchema)
+		validators: zod4Client(formSchema),
+		onError: ({ result }) => {
+			toast.error(result.error.message);
+		}
 	});
 
-	const { form: formData, enhance } = form;
+	const { form: formData, enhance, submitting } = form;
 </script>
 
 <svelte:head>
@@ -56,8 +61,14 @@
 
 					<Form.Button
 						class="w-full bg-primary text-primary-foreground transition-colors hover:bg-primary/90"
+						disabled={$submitting}
 					>
-						Submit
+						{#if $submitting}
+							<Spinner />
+							Verifying...
+						{:else}
+							<span>Submit</span>
+						{/if}
 					</Form.Button>
 				</form>
 

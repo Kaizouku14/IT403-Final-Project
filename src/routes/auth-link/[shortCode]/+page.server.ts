@@ -1,13 +1,18 @@
-import type { PageServerLoad, Actions } from './$types.ts';
+import type { Actions } from './$types.ts';
 import { superValidate } from 'sveltekit-superforms';
 import { formSchema } from './schema';
 import { zod4 } from 'sveltekit-superforms/adapters';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail, redirect, error } from '@sveltejs/kit';
 import { getLink, verifyPassword } from '$lib/helper/helper.ts';
 
-export const load: PageServerLoad = async () => {
+export const load = async ({ params }) => {
+	const link = await getLink(params.shortCode);
+
+	if (!link.password) throw error(404, 'This short link does not exist or has expired');
+
 	return {
-		form: await superValidate(zod4(formSchema))
+		form: await superValidate(zod4(formSchema)),
+		link
 	};
 };
 
@@ -23,18 +28,11 @@ export const actions: Actions = {
 		const { password } = form.data;
 
 		const link = await getLink(shortCode);
-		console.log(link);
-		if (!link) {
-			return fail(404, { error: 'Link not found' });
-		}
-
 		const isMatch = await verifyPassword(password, link.password!);
 		if (isMatch) {
 			throw redirect(302, link.destinationUrl);
 		}
 
-		return {
-			form
-		};
+		throw error(401, 'Invalid password');
 	}
 };
