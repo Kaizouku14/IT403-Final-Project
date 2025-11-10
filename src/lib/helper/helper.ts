@@ -1,6 +1,17 @@
-import { db, eq } from '../server/db';
+import { db, eq, and, gt } from '../server/db';
 import { links as LinksTable } from '../server/db/schema';
 import crypto from 'crypto';
+import bcrypt from 'bcrypt';
+
+export const hashPassword = async (password: string): Promise<string> => {
+	const SALT_ROUNDS = 12;
+	const hash = await bcrypt.hash(password, SALT_ROUNDS);
+	return hash;
+};
+
+export const verifyPassword = async (password: string, hashed: string): Promise<boolean> => {
+	return bcrypt.compare(password, hashed);
+};
 
 export function generateId(): string {
 	return crypto.randomUUID();
@@ -36,4 +47,24 @@ export const generateUniqueSlug = async (length: number = 4): Promise<string> =>
 	} while (await isSlugTaken(slug));
 
 	return slug;
+};
+
+export const getLink = async (shortCode: string) => {
+	const [links] = await db
+		.select({
+			destinationUrl: LinksTable.destinationUrl,
+			password: LinksTable.password
+		})
+		.from(LinksTable)
+		.where(
+			and(
+				eq(LinksTable.shortCode, shortCode),
+				eq(LinksTable.isActive, true),
+				gt(LinksTable.expireAt, new Date())
+			)
+		)
+		.limit(1)
+		.execute();
+
+	return links;
 };

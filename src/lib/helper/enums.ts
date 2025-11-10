@@ -3,7 +3,7 @@ export enum pageRoutes {
 	SIGNUP = '/signup',
 	FORGOT_PASSWORD = '/forgot-password',
 	DASHBOARD = '/dashboard',
-	AUTH_LINK = '/auth-link'
+	AUTH_LINK = '/auth-link/[shortCode]'
 }
 
 export enum socialProviders {

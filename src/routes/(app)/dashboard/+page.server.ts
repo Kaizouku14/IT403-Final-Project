@@ -61,6 +61,7 @@ export const actions: Actions = {
 			folderId = result[0].id;
 		}
 
+		const expireAt = new Date(Date.now() + 31 * 24 * 60 * 60 * 1000); //31 days
 		await db.insert(LinksTable).values({
 			id: linkId,
 			userId: user.id,
@@ -68,7 +69,8 @@ export const actions: Actions = {
 			destinationUrl,
 			title,
 			folderId,
-			expireAt: new Date(Date.now() + 31 * 24 * 60 * 60 * 1000) //31 days
+			password: '12345678',
+			expireAt
 		});
 
 		return {
