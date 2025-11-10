@@ -1,0 +1,145 @@
+import { integer, sqliteTable, text, index } from 'drizzle-orm/sqlite-core';
+import { user } from './auth';
+import { sql } from 'drizzle-orm';
+
+export const links = sqliteTable(
+	'links',
+	{
+		id: text('id').primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => user.id, { onDelete: 'cascade' }),
+
+		// The short code (e.g., "abc123")
+		shortCode: text('short_code').notNull().unique(),
+
+		// Original long URL
+		destinationUrl: text('destination_url').notNull(),
+
+		// Metadata
+		title: text('title'), // Optional title for the link
+		description: text('description'),
+
+		// Settings
+		passwordHash: text('password_hash'), // Optional password protection
+		expiresAt: integer('expires_at', { mode: 'timestamp' }),
+		isActive: integer('is_active', { mode: 'boolean' }).notNull().default(true),
+
+		// Folder/collection organization
+		folderId: text('folder_id').references(() => folders.id, { onDelete: 'set null' }),
+
+		// Timestamps
+		createdAt: integer('created_at', { mode: 'timestamp' })
+			.notNull()
+			.default(sql`(unixepoch())`),
+		updatedAt: integer('updated_at', { mode: 'timestamp' })
+			.notNull()
+			.default(sql`(unixepoch())`)
+	},
+	(table) => [
+		index('link_short_code_idx').on(table.shortCode),
+		index('link_user_id_idx').on(table.userId),
+		index('link_folder_id_idx').on(table.folderId)
+	]
+);
+
+export const folders = sqliteTable(
+	'folders',
+	{
+		id: text('id').primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => user.id, { onDelete: 'cascade' }),
+		name: text('name').notNull(),
+		color: text('color'), // Hex color for UI
+		createdAt: integer('created_at', { mode: 'timestamp' })
+			.notNull()
+			.default(sql`(unixepoch())`)
+	},
+	(table) => [index('folder_user_id_idx').on(table.userId)]
+);
+
+export const clicks = sqliteTable(
+	'clicks',
+	{
+		id: text('id').primaryKey(),
+		linkId: text('link_id')
+			.notNull()
+			.references(() => links.id, { onDelete: 'cascade' }),
+
+		// Geographic data
+		country: text('country'),
+		city: text('city'),
+		region: text('region'),
+
+		// Referrer information
+		referrer: text('referrer'), // Where they came from (e.g., "twitter.com")
+		referrerSource: text('referrer_source'), // Categorized (e.g., "social", "email", "direct")
+
+		// Device information
+		device: text('device'), // "mobile", "desktop", "tablet"
+		os: text('os'), // "iOS", "Android", "Windows", "macOS"
+		browser: text('browser'), // "Chrome", "Safari", "Firefox"
+
+		// IP and User Agent (for analytics, respect privacy)
+		ipAddress: text('ip_address'),
+		userAgent: text('user_agent'),
+		// QR code tracking
+		isQrScan: integer('is_qr_scan', { mode: 'boolean' }).notNull().default(false),
+		// Timestamp
+		clickedAt: integer('clicked_at', { mode: 'timestamp' })
+			.notNull()
+			.default(sql`(unixepoch())`)
+	},
+	(table) => [
+		index('link_id_idx').on(table.linkId),
+		index('clicked_at_idx').on(table.clickedAt),
+		index('link_clicked_idx').on(table.linkId, table.clickedAt) // Composite index for time-based queries per link
+	]
+);
+
+export const qrCodes = sqliteTable(
+	'qr_codes',
+	{
+		id: text('id').primaryKey(),
+		linkId: text('link_id')
+			.notNull()
+			.references(() => links.id, { onDelete: 'cascade' }),
+		// QR code image (base64 or URL to stored image)
+		imageData: text('image_data').notNull(),
+		// QR code settings
+		size: integer('size').notNull().default(256),
+		format: text('format').notNull().default('png'), // png, svg
+
+		createdAt: integer('created_at', { mode: 'timestamp' })
+			.notNull()
+			.default(sql`(unixepoch())`)
+	},
+	(table) => [index('qr_link_id_idx').on(table.linkId)]
+);
+
+export const linkAnalyticsSummary = sqliteTable(
+	'link_analytics_summary',
+	{
+		id: text('id').primaryKey(),
+		linkId: text('link_id')
+			.notNull()
+			.references(() => links.id, { onDelete: 'cascade' }),
+		// Time period
+		date: text('date').notNull(), // YYYY-MM-DD format
+		// Aggregated metrics
+		totalClicks: integer('total_clicks').notNull().default(0),
+		uniqueClicks: integer('unique_clicks').notNull().default(0),
+		qrScans: integer('qr_scans').notNull().default(0),
+		// Top referrers (JSON array of {source, count})
+		topReferrers: text('top_referrers', { mode: 'json' }),
+		// Geographic distribution (JSON array of {country, count})
+		topCountries: text('top_countries', { mode: 'json' }),
+		// Device breakdown (JSON object {mobile, desktop, tablet})
+		deviceBreakdown: text('device_breakdown', { mode: 'json' }),
+		createdAt: integer('created_at', { mode: 'timestamp' })
+			.notNull()
+			.default(sql`(unixepoch())`)
+	},
+	(table) => [index('link_id_date_idx').on(table.linkId, table.date)]
+);

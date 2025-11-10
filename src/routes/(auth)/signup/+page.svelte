@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CirclePoundSterling } from '@lucide/svelte/icons';
+	import { Link2 } from '@lucide/svelte/icons';
 	import {
 		FieldGroup,
 		Field,
@@ -58,11 +58,11 @@
 					<div class="flex flex-col items-center gap-2 text-center">
 						<a href={pageRoutes.LOGIN} class="flex flex-col items-center gap-2 font-medium">
 							<div class="flex size-8 items-center justify-center rounded-md">
-								<CirclePoundSterling class="size-8" />
+								<Link2 class="size-8" />
 							</div>
-							<span class="sr-only">VaultTrack.</span>
+							<span class="sr-only">Sniplink.</span>
 						</a>
-						<h1 class="text-xl font-bold">Welcome to VaultTrack.</h1>
+						<h1 class="text-xl font-bold">Welcome to Sniplink.</h1>
 						<FieldDescription>
 							Already have an account? <a href={pageRoutes.LOGIN}>Sign in</a>
 						</FieldDescription>
