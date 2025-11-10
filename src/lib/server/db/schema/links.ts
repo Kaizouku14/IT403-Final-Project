@@ -1,6 +1,7 @@
 import { integer, sqliteTable, text, index } from 'drizzle-orm/sqlite-core';
 import { user } from './auth';
 import { sql } from 'drizzle-orm';
+import { FOLDERS } from '$lib/helper/constant.ts';
 
 export const links = sqliteTable(
 	'links',
@@ -18,7 +19,6 @@ export const links = sqliteTable(
 
 		// Metadata
 		title: text('title'), // Optional title for the link
-		description: text('description'),
 
 		// Settings
 		passwordHash: text('password_hash'), // Optional password protection
@@ -50,8 +50,7 @@ export const folders = sqliteTable(
 		userId: text('user_id')
 			.notNull()
 			.references(() => user.id, { onDelete: 'cascade' }),
-		name: text('name').notNull(),
-		color: text('color'), // Hex color for UI
+		name: text('name', { enum: FOLDERS }).notNull(),
 		createdAt: integer('created_at', { mode: 'timestamp' })
 			.notNull()
 			.default(sql`(unixepoch())`)
