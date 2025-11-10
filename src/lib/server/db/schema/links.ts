@@ -10,25 +10,10 @@ export const links = sqliteTable(
 		userId: text('user_id')
 			.notNull()
 			.references(() => user.id, { onDelete: 'cascade' }),
-
-		// The short code (e.g., "abc123")
 		shortCode: text('short_code').notNull().unique(),
-
-		// Original long URL
 		destinationUrl: text('destination_url').notNull(),
-
-		// Metadata
-		title: text('title'), // Optional title for the link
-
-		// Settings
-		passwordHash: text('password_hash'), // Optional password protection
-		expiresAt: integer('expires_at', { mode: 'timestamp' }),
-		isActive: integer('is_active', { mode: 'boolean' }).notNull().default(true),
-
-		// Folder/collection organization
+		title: text('title'),
 		folderId: text('folder_id').references(() => folders.id, { onDelete: 'set null' }),
-
-		// Timestamps
 		createdAt: integer('created_at', { mode: 'timestamp' })
 			.notNull()
 			.default(sql`(unixepoch())`),

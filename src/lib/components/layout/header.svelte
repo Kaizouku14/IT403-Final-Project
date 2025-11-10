@@ -6,6 +6,8 @@
 	import { goto } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
 	import Toggler from '../theme/toggler.svelte';
+	import { Link2 } from '@lucide/svelte';
+	import { resolve } from '$app/paths';
 
 	export let user;
 
@@ -13,14 +15,9 @@
 		toast.loading('Logging out...');
 
 		try {
-			await authClient.signOut({
-				fetchOptions: {
-					onSuccess: () => {
-						toast.success('Successfully logged out.');
-						goto(pageRoutes.LOGIN);
-					}
-				}
-			});
+			await authClient.signOut();
+			toast.success('Successfully logged out.');
+			goto(resolve(pageRoutes.LOGIN));
 		} catch (error) {
 			toast.error((error as Error).message);
 		}
@@ -28,7 +25,10 @@
 </script>
 
 <header class="flex h-15 w-full items-center justify-between p-6">
-	<h1 class="text-2xl font-black">Sniplink</h1>
+	<a href={resolve(pageRoutes.DASHBOARD)} class="flex items-center gap-2">
+		<Link2 class="size-6" />
+		<h1 class="text-2xl font-black">Sniplink</h1>
+	</a>
 
 	<div class="flex items-center gap-2">
 		<Toggler />
