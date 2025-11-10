@@ -3,13 +3,24 @@ import { formSchema } from './components/schema.ts';
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { fail } from '@sveltejs/kit';
-import { db } from '$lib/server/db/index.ts';
+import { db, eq } from '$lib/server/db/index.ts';
 import { links as LinksTable, folders as FoldersTable } from '$lib/server/db/schema/index.ts';
 import { generateId, generateUniqueSlug, isSlugTaken } from '$lib/helper/helper.ts';
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals }) => {
+	const user = locals.user!;
+
+	const folderAndLinks = await db
+		.select()
+		.from(FoldersTable)
+		.leftJoin(LinksTable, eq(FoldersTable.id, LinksTable.folderId))
+		.where(eq(FoldersTable.userId, user.id));
+
+	const form = await superValidate(zod4(formSchema));
+
 	return {
-		form: await superValidate(zod4(formSchema))
+		form,
+		folderAndLinks
 	};
 };
 
@@ -56,7 +67,8 @@ export const actions: Actions = {
 			shortCode: customSlug ?? generateSlug,
 			destinationUrl,
 			title,
-			folderId
+			folderId,
+			expireAt: new Date(Date.now() + 31 * 24 * 60 * 60 * 1000) //31 days
 		});
 
 		return {

@@ -2,7 +2,6 @@
 	import * as Form from '$lib/components/ui/form/index.ts';
 	import * as Select from '$lib/components/ui/select/index.ts';
 	import * as Dialog from '$lib/components/ui/dialog/index.ts';
-	import Button from '$lib/components/ui/button/button.svelte';
 	import { Spinner } from '$lib/components/ui/spinner/index.ts';
 	import { Input } from '$lib/components/ui/input/index.ts';
 	import { PlusIcon } from '@lucide/svelte';
@@ -11,6 +10,7 @@
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import { FOLDERS } from '$lib/helper/constant.ts';
 	import { toast } from 'svelte-sonner';
+	import { buttonVariants } from '$lib/components/ui/button/button.svelte';
 
 	let { data }: { data: { form: SuperValidated<Infer<FormSchema>> } } = $props();
 
@@ -20,7 +20,7 @@
 			if (f.valid) {
 				toast.success('Link created successfully!');
 			} else {
-				toast.error('Please fix the errors in the form.');
+				toast.error('Please fill in all required fields.');
 			}
 		}
 	});
@@ -29,11 +29,9 @@
 </script>
 
 <Dialog.Root>
-	<Dialog.Trigger>
-		<Button class="flex items-center gap-2">
-			<PlusIcon class="size-4" />
-			<span class="font-bold">Create Link</span>
-		</Button>
+	<Dialog.Trigger class={buttonVariants({ variant: 'default' })}>
+		<PlusIcon class="size-4" />
+		<span class="font-bold">Create Link</span>
 	</Dialog.Trigger>
 	<Dialog.Content>
 		<Dialog.Header>

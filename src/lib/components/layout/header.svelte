@@ -25,8 +25,7 @@
 </script>
 
 <header class="flex h-15 w-full items-center justify-between p-6">
-	<a href={resolve(pageRoutes.DASHBOARD)} class="flex items-center gap-2">
-		<Link2 class="size-6" />
+	<a href={resolve(pageRoutes.DASHBOARD)}>
 		<h1 class="text-2xl font-black">Sniplink</h1>
 	</a>
 

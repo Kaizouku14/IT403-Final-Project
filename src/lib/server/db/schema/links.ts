@@ -14,6 +14,9 @@ export const links = sqliteTable(
 		destinationUrl: text('destination_url').notNull(),
 		title: text('title'),
 		folderId: text('folder_id').references(() => folders.id, { onDelete: 'set null' }),
+		password: text('password'),
+		expireAt: integer('expire_at', { mode: 'timestamp' }).notNull(),
+		isActive: integer('is_active', { mode: 'boolean' }).notNull().default(false),
 		createdAt: integer('created_at', { mode: 'timestamp' })
 			.notNull()
 			.default(sql`(unixepoch())`),
