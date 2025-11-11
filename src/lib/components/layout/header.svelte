@@ -6,7 +6,6 @@
 	import { goto } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
 	import Toggler from '../theme/toggler.svelte';
-	import { resolve } from '$app/paths';
 
 	export let user;
 
@@ -16,7 +15,7 @@
 		try {
 			await authClient.signOut();
 			toast.success('Successfully logged out.');
-			goto(resolve(pageRoutes.LOGIN, {}));
+			goto(pageRoutes.LOGIN);
 		} catch (error) {
 			toast.error((error as Error).message);
 		}
@@ -24,7 +23,7 @@
 </script>
 
 <header class="flex h-15 w-full items-center justify-between p-6">
-	<a href={resolve(pageRoutes.DASHBOARD, {})}>
+	<a href={pageRoutes.DASHBOARD}>
 		<h1 class="text-2xl font-black">Sniplink</h1>
 	</a>
 

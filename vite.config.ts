@@ -5,4 +5,8 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
 	plugins: [tailwindcss(), sveltekit(), devtoolsJson()]
+	// server: {
+	// 	// Allow your ngrok host
+	// 	allowedHosts: ['millennially-hyponitrous-libby.ngrok-free.dev']
+	// }
 });

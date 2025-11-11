@@ -4,13 +4,15 @@
 	import * as Dialog from '$lib/components/ui/dialog/index.ts';
 	import { Spinner } from '$lib/components/ui/spinner/index.ts';
 	import { Input } from '$lib/components/ui/input/index.ts';
-	import { PlusIcon } from '@lucide/svelte';
-	import { formSchema, type FormSchema } from './schema.ts';
+	import { buttonVariants } from '$lib/components/ui/button/button.svelte';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
+	import { InfoIcon, PlusIcon } from '@lucide/svelte';
+	import { formSchema, type FormSchema } from './schema.ts';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import { FOLDERS } from '$lib/helper/constant.ts';
 	import { toast } from 'svelte-sonner';
-	import { buttonVariants } from '$lib/components/ui/button/button.svelte';
+	import * as InputGroup from '$lib/components/ui/input-group/index.ts';
+	import * as Popover from '$lib/components/ui/popover/index.ts';
 
 	let { data }: { data: { form: SuperValidated<Infer<FormSchema>> } } = $props();
 
@@ -60,13 +62,46 @@
 				<Form.Control>
 					{#snippet children({ props })}
 						<Form.Label>Custom Slug (optional)</Form.Label>
-						<div class="flex items-center gap-2">
-							<span class="text-sm text-muted-foreground">sniplink.co/</span>
-							<Input {...props} bind:value={$formData.customSlug} placeholder="my-custom-link" />
-						</div>
+
+						<InputGroup.Root>
+							<Popover.Root>
+								<Popover.Trigger>
+									{#snippet child({ props })}
+										<InputGroup.Addon>
+											<InputGroup.Button {...props} variant="secondary" size="icon-xs">
+												<InfoIcon />
+											</InputGroup.Button>
+										</InputGroup.Addon>
+									{/snippet}
+								</Popover.Trigger>
+								<Popover.Content
+									align="start"
+									class="flex flex-col gap-1 rounded-xl text-sm leading-relaxed"
+								>
+									<p class="font-medium text-foreground">
+										Set a <span class="font-semibold text-primary">custom slug</span> for your link.
+									</p>
+									<p>
+										Keep it short and catchy.
+										<span class="font-semibold text-muted-foreground"
+											>Custom domains coming soon!</span
+										>
+									</p>
+								</Popover.Content>
+							</Popover.Root>
+							<InputGroup.Addon class="pl-1.5 text-muted-foreground">
+								<InputGroup.Text>sniplink.com/</InputGroup.Text>
+							</InputGroup.Addon>
+							<InputGroup.Input
+								{...props}
+								bind:value={$formData.customSlug}
+								placeholder="my-custom-link"
+							/>
+							<InputGroup.Addon align="inline-end"></InputGroup.Addon>
+						</InputGroup.Root>
 					{/snippet}
 				</Form.Control>
-				<Form.Description>Custom short link code (optional).</Form.Description>
+				<Form.Description>Custom short link code.</Form.Description>
 				<Form.FieldErrors />
 			</Form.Field>
 
@@ -97,7 +132,7 @@
 						</Select.Root>
 					{/snippet}
 				</Form.Control>
-				<Form.Description>Organize your links (optional).</Form.Description>
+				<Form.Description>Organize your links.</Form.Description>
 				<Form.FieldErrors />
 			</Form.Field>
 

@@ -102,10 +102,10 @@
 							/>
 						</Field>
 						<Field>
-							<FieldLabel for="password">Confirm Password</FieldLabel>
+							<FieldLabel for="confirmPassword">Confirm Password</FieldLabel>
 							<Input
-								id="password"
-								type="password"
+								id="confirmPassword"
+								type="confirmPassword"
 								placeholder="••••••••"
 								bind:value={confirmPassword}
 								required

@@ -1,7 +1,8 @@
 import { db, eq, and, gt } from '../server/db';
-import { links as LinksTable } from '../server/db/schema';
+import { links as LinksTable, clicks as ClicksTable } from '../server/db/schema';
 import { categorizeReferrer } from '$lib/utils';
 import { UAParser } from 'ua-parser-js';
+import { geolocation } from '@vercel/functions';
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 
@@ -72,18 +73,35 @@ export const getLink = async (shortCode: string) => {
 	return links;
 };
 
-export const trackClick = async (request: Request) => {
-	const userAgent = request.headers.get('user-agent') ?? 'unknown';
-	const referer = request.headers.get('referer') || '';
-	const { device, os, browser } = new UAParser(userAgent).getResult();
+export const trackClick = async (
+	request: Request,
+	ip: string,
+	linkId: string,
+	isQrScan = false
+) => {
+	try {
+		const userAgent = request.headers.get('user-agent') ?? 'unknown';
+		const referer = request.headers.get('referer') ?? '';
+		const { device, os, browser } = new UAParser(userAgent).getResult();
+		const { city, country, region } = geolocation(request);
 
-	const osName = os?.name;
-	const browserName = browser?.name;
-	const deviceType = device?.type ?? 'desktop';
-	const refererr = categorizeReferrer(referer);
-
-	//TODO: GET USER IP ADDRESS AND GEOLOCATION
-
-	console.log(refererr);
-	console.log({ device: deviceType, os: osName, browser: browserName });
+		await db.insert(ClicksTable).values({
+			id: generateId(),
+			linkId,
+			country,
+			city,
+			region,
+			referrer: referer,
+			referrerSource: categorizeReferrer(referer),
+			device: device?.type ?? 'desktop',
+			os: os?.name ?? 'unknown',
+			browser: browser?.name ?? 'unknown',
+			ipAddress: ip,
+			userAgent,
+			isQrScan,
+			clickedAt: new Date()
+		});
+	} catch (error) {
+		console.error('Error tracking click:', error);
+	}
 };

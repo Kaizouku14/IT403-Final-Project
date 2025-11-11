@@ -11,8 +11,7 @@ export const load = async ({ params }) => {
 	if (!link.password) throw error(404, 'This short link does not exist or has expired');
 
 	return {
-		form: await superValidate(zod4(formSchema)),
-		link
+		form: await superValidate(zod4(formSchema))
 	};
 };
 
@@ -24,6 +23,7 @@ export const actions: Actions = {
 				form
 			});
 		}
+
 		const { shortCode } = event.params;
 		const { password } = form.data;
 

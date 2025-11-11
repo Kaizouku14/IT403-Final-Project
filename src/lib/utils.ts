@@ -22,6 +22,21 @@ export const categorizeReferrer = (referrer: string): string => {
 	return 'Other';
 };
 
+export const getRealClientIP = (request: Request, fallback: () => string): string => {
+	const cfIp = request.headers.get('cf-connecting-ip'); // Check Cloudflare header
+	if (cfIp) return cfIp;
+
+	const xRealIp = request.headers.get('x-real-ip'); // Check Vercel/other proxies
+	if (xRealIp) return xRealIp;
+
+	const xForwardedFor = request.headers.get('x-forwarded-for'); // Check x-forwarded-for (take first IP)
+	if (xForwardedFor) {
+		return xForwardedFor.split(',')[0].trim();
+	}
+
+	return fallback();
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type WithoutChild<T> = T extends { child?: any } ? Omit<T, 'child'> : T;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
