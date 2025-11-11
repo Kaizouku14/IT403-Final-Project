@@ -53,27 +53,17 @@ export const clicks = sqliteTable(
 		linkId: text('link_id')
 			.notNull()
 			.references(() => links.id, { onDelete: 'cascade' }),
-
-		// Geographic data
 		country: text('country'),
 		city: text('city'),
 		region: text('region'),
-
-		// Referrer information
-		referrer: text('referrer'), // Where they came from (e.g., "twitter.com")
-		referrerSource: text('referrer_source'), // Categorized (e.g., "social", "email", "direct")
-
-		// Device information
-		device: text('device'), // "mobile", "desktop", "tablet"
-		os: text('os'), // "iOS", "Android", "Windows", "macOS"
-		browser: text('browser'), // "Chrome", "Safari", "Firefox"
-
-		// IP and User Agent (for analytics, respect privacy)
+		referrer: text('referrer'),
+		referrerSource: text('referrer_source'),
+		device: text('device'),
+		os: text('os'),
+		browser: text('browser'),
 		ipAddress: text('ip_address'),
 		userAgent: text('user_agent'),
-		// QR code tracking
 		isQrScan: integer('is_qr_scan', { mode: 'boolean' }).notNull().default(false),
-		// Timestamp
 		clickedAt: integer('clicked_at', { mode: 'timestamp' })
 			.notNull()
 			.default(sql`(unixepoch())`)
@@ -81,7 +71,7 @@ export const clicks = sqliteTable(
 	(table) => [
 		index('link_id_idx').on(table.linkId),
 		index('clicked_at_idx').on(table.clickedAt),
-		index('link_clicked_idx').on(table.linkId, table.clickedAt) // Composite index for time-based queries per link
+		index('link_clicked_idx').on(table.linkId, table.clickedAt)
 	]
 );
 
@@ -92,12 +82,9 @@ export const qrCodes = sqliteTable(
 		linkId: text('link_id')
 			.notNull()
 			.references(() => links.id, { onDelete: 'cascade' }),
-		// QR code image (base64 or URL to stored image)
 		imageData: text('image_data').notNull(),
-		// QR code settings
 		size: integer('size').notNull().default(256),
-		format: text('format').notNull().default('png'), // png, svg
-
+		format: text('format').notNull().default('png'),
 		createdAt: integer('created_at', { mode: 'timestamp' })
 			.notNull()
 			.default(sql`(unixepoch())`)
@@ -112,17 +99,12 @@ export const linkAnalyticsSummary = sqliteTable(
 		linkId: text('link_id')
 			.notNull()
 			.references(() => links.id, { onDelete: 'cascade' }),
-		// Time period
-		date: text('date').notNull(), // YYYY-MM-DD format
-		// Aggregated metrics
+		date: text('date').notNull(),
 		totalClicks: integer('total_clicks').notNull().default(0),
 		uniqueClicks: integer('unique_clicks').notNull().default(0),
 		qrScans: integer('qr_scans').notNull().default(0),
-		// Top referrers (JSON array of {source, count})
 		topReferrers: text('top_referrers', { mode: 'json' }),
-		// Geographic distribution (JSON array of {country, count})
 		topCountries: text('top_countries', { mode: 'json' }),
-		// Device breakdown (JSON object {mobile, desktop, tablet})
 		deviceBreakdown: text('device_breakdown', { mode: 'json' }),
 		createdAt: integer('created_at', { mode: 'timestamp' })
 			.notNull()

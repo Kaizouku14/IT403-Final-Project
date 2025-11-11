@@ -2,9 +2,9 @@ import type { RequestHandler } from './$types';
 import { redirect, error } from '@sveltejs/kit';
 import { pageRoutes } from '$lib/helper/enums';
 import { resolve } from '$app/paths';
-import { getLink } from '$lib/helper/helper';
+import { getLink, trackClick } from '$lib/helper/helper';
 
-export const GET: RequestHandler = async ({ params }) => {
+export const GET: RequestHandler = async ({ params, request }) => {
 	const link = await getLink(params.shortCode);
 
 	if (!link) {
@@ -19,6 +19,8 @@ export const GET: RequestHandler = async ({ params }) => {
 			})
 		);
 	}
+
+	await trackClick(request);
 
 	return new Response(null, {
 		status: 302,

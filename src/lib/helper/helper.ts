@@ -1,5 +1,7 @@
 import { db, eq, and, gt } from '../server/db';
 import { links as LinksTable } from '../server/db/schema';
+import { categorizeReferrer } from '$lib/utils';
+import { UAParser } from 'ua-parser-js';
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 
@@ -52,6 +54,7 @@ export const generateUniqueSlug = async (length: number = 4): Promise<string> =>
 export const getLink = async (shortCode: string) => {
 	const [links] = await db
 		.select({
+			linkId: LinksTable.id,
 			destinationUrl: LinksTable.destinationUrl,
 			password: LinksTable.password
 		})
@@ -67,4 +70,20 @@ export const getLink = async (shortCode: string) => {
 		.execute();
 
 	return links;
+};
+
+export const trackClick = async (request: Request) => {
+	const userAgent = request.headers.get('user-agent') ?? 'unknown';
+	const referer = request.headers.get('referer') || '';
+	const { device, os, browser } = new UAParser(userAgent).getResult();
+
+	const osName = os?.name;
+	const browserName = browser?.name;
+	const deviceType = device?.type ?? 'desktop';
+	const refererr = categorizeReferrer(referer);
+
+	//TODO: GET USER IP ADDRESS AND GEOLOCATION
+
+	console.log(refererr);
+	console.log({ device: deviceType, os: osName, browser: browserName });
 };

@@ -69,7 +69,6 @@ export const actions: Actions = {
 			destinationUrl,
 			title,
 			folderId,
-			password: '12345678',
 			expireAt
 		});
 
