@@ -7,7 +7,7 @@ export const formSchema = z.object({
 	title: z.string().min(1, {
 		message: 'Please enter a title description'
 	}),
-	folder: z.union([z.enum(FOLDERS), z.literal('')]).optional()
+	folder: z.enum(FOLDERS)
 });
 
 export type FormSchema = typeof formSchema;

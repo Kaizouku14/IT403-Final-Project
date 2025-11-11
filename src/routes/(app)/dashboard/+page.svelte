@@ -1,38 +1,23 @@
 <script lang="ts">
 	import WelcomeBanner from '$lib/components/layout/welcome-banner.svelte';
-	import { Link2, ScanQrCode, TrendingUp, Clock } from '@lucide/svelte';
 	import type { PageData } from './$types';
 	import Form from './components/form.svelte';
+	import StatCard from './components/card/stat-card.svelte';
+	import * as Empty from '$lib/components/ui/empty/index.ts';
+	import { Link2Off } from '@lucide/svelte';
+	import * as Tabs from '$lib/components/ui/tabs/index.js';
+	import FolderCard from './components/card/folder-card.svelte';
+	import type { folderTypes } from '$lib/helper/constant';
+	import type { Folder } from '$lib/interfaces/folder';
 
 	export let data: PageData;
-	const { user, form } = data;
+	const { user, form, folderAndLinks } = data;
 
-	const stats = [
-		{
-			title: 'No. of Links',
-			value: 10,
-			description: 'Total links created by you',
-			icon: Link2
-		},
-		{
-			title: 'QR Scans',
-			value: 10,
-			description: 'Number of QR codes scanned',
-			icon: ScanQrCode
-		},
-		{
-			title: 'Total Clicks',
-			value: 10,
-			description: 'All-time click count',
-			icon: TrendingUp
-		},
-		{
-			title: 'Avg Daily Clicks',
-			value: 10,
-			description: 'Average clicks per day',
-			icon: Clock
-		}
-	];
+	const folderValues: Record<folderTypes, Folder> = {
+		Personal: { noOfLinks: 5, updatedAt: new Date('2025-11-09T10:00:00') },
+		Marketing: { noOfLinks: 12, updatedAt: new Date('2025-11-10T12:30:00') },
+		Development: { noOfLinks: 8, updatedAt: new Date('2025-11-11T08:15:00') }
+	};
 </script>
 
 <svelte:head>
@@ -45,21 +30,35 @@
 		<WelcomeBanner {user} />
 		<Form data={{ form }} />
 	</div>
+	<StatCard values={{ totalLinks: 10, totalScans: 10, totalClicks: 10, avgDailyClicks: 10 }} />
 
-	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-		{#each stats as stat (stat.title)}
-			<div class="flex flex-col gap-2 rounded-xl border border-border bg-card p-4">
-				<div class="flex items-center justify-between">
-					<h2 class="text-base font-bold">{stat.title}</h2>
-
-					<div class="flex size-4 items-center justify-center">
-						<svelte:component this={stat.icon} class="size-6" />
-					</div>
-				</div>
-
-				<p class="mt-4 text-2xl font-bold">{stat.value}</p>
-				<p class="text-xs text-muted-foreground">{stat.description}</p>
-			</div>
-		{/each}
-	</div>
+	<Tabs.Root value="folders">
+		<Tabs.List>
+			<Tabs.Trigger value="folders" class="text-sm font-bold">Folders</Tabs.Trigger>
+			<Tabs.Trigger value="links" class="text-sm font-bold">Links</Tabs.Trigger>
+		</Tabs.List>
+		<Tabs.Content value="folders" class="py-2">
+			<FolderCard {folderValues} />
+		</Tabs.Content>
+		<Tabs.Content value="links" class="rounded-md border border-border bg-card">
+			{#if folderAndLinks.length > 0}
+				<p>too hot!</p>
+			{:else}
+				<Empty.Root>
+					<Empty.Header>
+						<Empty.Media variant="icon">
+							<Link2Off />
+						</Empty.Media>
+						<Empty.Title>No Links Yet</Empty.Title>
+						<Empty.Description>
+							You haven't created any Links yet. Get started by creating your first short link.
+						</Empty.Description>
+					</Empty.Header>
+					<Empty.Content>
+						<Form data={{ form }} />
+					</Empty.Content>
+				</Empty.Root>
+			{/if}
+		</Tabs.Content>
+	</Tabs.Root>
 </section>

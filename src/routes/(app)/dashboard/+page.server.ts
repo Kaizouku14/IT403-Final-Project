@@ -16,6 +16,10 @@ export const load: PageServerLoad = async ({ locals }) => {
 		.leftJoin(LinksTable, eq(FoldersTable.id, LinksTable.folderId))
 		.where(eq(FoldersTable.userId, user.id));
 
+	// console.log(await db.select().from(FoldersTable));
+	// console.log(await db.select().from(LinksTable));
+	console.log(folderAndLinks);
+
 	const form = await superValidate(zod4(formSchema));
 
 	return {
@@ -38,7 +42,7 @@ export const actions: Actions = {
 		if (!user) return fail(401, { message: 'Unauthorized' });
 
 		const { customSlug, title, destinationUrl, folder } = form.data;
-		let folderId = null;
+		const folderId = generateId();
 		const linkId = generateId();
 		const generateSlug = await generateUniqueSlug();
 
@@ -48,18 +52,11 @@ export const actions: Actions = {
 			return fail(409, { message: 'Slug already taken' });
 		}
 
-		if (folder) {
-			const result = await db
-				.insert(FoldersTable)
-				.values({
-					id: generateId(),
-					userId: user.id,
-					name: folder
-				})
-				.returning({ id: FoldersTable.id });
-
-			folderId = result[0].id;
-		}
+		await db.insert(FoldersTable).values({
+			id: folderId,
+			userId: user.id,
+			name: folder
+		});
 
 		const expireAt = new Date(Date.now() + 31 * 24 * 60 * 60 * 1000); //31 days
 		await db.insert(LinksTable).values({

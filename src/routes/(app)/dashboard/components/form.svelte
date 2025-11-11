@@ -119,7 +119,7 @@
 			<Form.Field {form} name="folder">
 				<Form.Control>
 					{#snippet children({ props })}
-						<Form.Label>Folder (optional)</Form.Label>
+						<Form.Label>Folder</Form.Label>
 						<Select.Root type="single" bind:value={$formData.folder} name={props.name}>
 							<Select.Trigger class="w-full" {...props}>
 								{$formData.folder ? $formData.folder : 'Select a Folder'}
