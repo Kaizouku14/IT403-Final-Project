@@ -1,9 +1,9 @@
 import type { Actions } from './$types.ts';
 import { superValidate } from 'sveltekit-superforms';
-import { formSchema } from './schema';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { fail, redirect, error } from '@sveltejs/kit';
 import { getLink, verifyPassword } from '$lib/helper/helper.ts';
+import { formSchema } from '$lib/components/schema/auth-link.ts';
 
 export const load = async ({ params }) => {
 	const link = await getLink(params.shortCode);

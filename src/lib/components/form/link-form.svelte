@@ -1,15 +1,13 @@
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form/index.ts';
-	import * as Select from '$lib/components/ui/select/index.ts';
 	import * as Dialog from '$lib/components/ui/dialog/index.ts';
 	import { Spinner } from '$lib/components/ui/spinner/index.ts';
 	import { Input } from '$lib/components/ui/input/index.ts';
 	import { buttonVariants } from '$lib/components/ui/button/button.svelte';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { InfoIcon, PlusIcon } from '@lucide/svelte';
-	import { formSchema, type FormSchema } from './schema.ts';
+	import { formSchema, type FormSchema } from '../schema/create-link.ts';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
-	import { FOLDERS } from '$lib/helper/constant.ts';
 	import { toast } from 'svelte-sonner';
 	import * as InputGroup from '$lib/components/ui/input-group/index.ts';
 	import * as Popover from '$lib/components/ui/popover/index.ts';
@@ -113,26 +111,6 @@
 					{/snippet}
 				</Form.Control>
 				<Form.Description>Short label for your link.</Form.Description>
-				<Form.FieldErrors />
-			</Form.Field>
-
-			<Form.Field {form} name="folder">
-				<Form.Control>
-					{#snippet children({ props })}
-						<Form.Label>Folder</Form.Label>
-						<Select.Root type="single" bind:value={$formData.folder} name={props.name}>
-							<Select.Trigger class="w-full" {...props}>
-								{$formData.folder ? $formData.folder : 'Select a Folder'}
-							</Select.Trigger>
-							<Select.Content>
-								{#each FOLDERS as folder (folder)}
-									<Select.Item value={folder}>{folder}</Select.Item>
-								{/each}
-							</Select.Content>
-						</Select.Root>
-					{/snippet}
-				</Form.Control>
-				<Form.Description>Organize your links.</Form.Description>
 				<Form.FieldErrors />
 			</Form.Field>
 

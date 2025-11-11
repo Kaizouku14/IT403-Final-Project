@@ -45,9 +45,7 @@
 
 			<Card.Footer class="mt-4 flex items-center justify-between text-xs text-muted-foreground">
 				<span>Created {formatAgo(values.updatedAt)}</span>
-				<Button class="font-medium text-primary hover:underline" variant="ghost" size="link"
-					>View</Button
-				>
+				<Button class="font-medium text-primary hover:underline" variant="link">View</Button>
 			</Card.Footer>
 		</Card.Root>
 	{/each}
