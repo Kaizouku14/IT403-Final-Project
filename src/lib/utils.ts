@@ -37,6 +37,16 @@ export const getRealClientIP = (request: Request, fallback: () => string): strin
 	return fallback();
 };
 
+export const slugify = (text: string): string => {
+	return text
+		.toLowerCase() // convert to lowercase
+		.trim() // remove leading/trailing whitespace
+		.normalize('NFD') // split accented characters
+		.replace(/[\u0300-\u036f]/g, '') // remove accents
+		.replace(/[^a-z0-9]+/g, '-') // replace non-alphanumeric with hyphen
+		.replace(/^-+|-+$/g, ''); // remove leading/trailing hyphens
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type WithoutChild<T> = T extends { child?: any } ? Omit<T, 'child'> : T;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

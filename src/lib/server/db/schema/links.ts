@@ -42,7 +42,7 @@ export const folders = sqliteTable(
 			.references(() => user.id, { onDelete: 'cascade' }),
 		name: text('name').notNull(),
 		description: text('description'),
-		color: text('color'),
+		color: text('color').notNull().default('#4b6caf'),
 		createdAt: integer('created_at', { mode: 'timestamp' })
 			.notNull()
 			.default(sql`(unixepoch())`),

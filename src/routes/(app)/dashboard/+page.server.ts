@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const folders = await db
 		.select({
 			id: FoldersTable.id,
-			folder: FoldersTable.name,
+			name: FoldersTable.name,
 			description: FoldersTable.description,
 			color: FoldersTable.color,
 			createdAt: FoldersTable.createdAt,
