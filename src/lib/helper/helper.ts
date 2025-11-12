@@ -3,8 +3,8 @@ import { links as LinksTable, clicks as ClicksTable } from '../server/db/schema'
 import { categorizeReferrer } from '$lib/utils';
 import { UAParser } from 'ua-parser-js';
 import { geolocation } from '@vercel/functions';
-import crypto from 'crypto';
 import bcrypt from 'bcrypt';
+import { nanoid } from 'nanoid';
 
 export const hashPassword = async (password: string): Promise<string> => {
 	const SALT_ROUNDS = 12;
@@ -17,7 +17,7 @@ export const verifyPassword = async (password: string, hashed: string): Promise<
 };
 
 export function generateId(): string {
-	return crypto.randomUUID();
+	return nanoid(16);
 }
 
 export const isSlugTaken = async (slug: string): Promise<boolean> => {

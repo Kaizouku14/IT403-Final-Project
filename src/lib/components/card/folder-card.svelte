@@ -3,22 +3,21 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Empty from '$lib/components/ui/empty/index.ts';
 	import { Folder as FolderIcon, Layers } from '@lucide/svelte';
-	import { formatDistanceToNow } from 'date-fns';
 	import type { Folder } from '$lib/interfaces/folder.ts';
 	import { resolve } from '$app/paths';
 	import { pageRoutes } from '$lib/helper/enums';
 	import { goto } from '$app/navigation';
-	import { slugify } from '$lib/utils';
+	import { formatAgo, slugify } from '$lib/utils';
 
 	let data: { folders: Folder[] } = $props();
-	const formatAgo = (d: Date) => formatDistanceToNow(d, { addSuffix: true });
 </script>
 
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
 	{#if data.folders.length > 0}
 		{#each data.folders as folder (folder.id)}
 			<Card.Root
-				class="group t max-w-md cursor-pointer rounded-2xl border border-t-2 border-border/60 p-4 transition-all duration-200 hover:border-primary/40 hover:shadow-md"
+				class="group max-w-md cursor-pointer rounded-2xl border border-t-2 border-border/60 p-4 shadow-2xs
+ transition-all duration-200 hover:border-primary/40"
 				style="border-top-color: {folder.color}"
 				onclick={() =>
 					goto(
@@ -44,7 +43,7 @@
 					</div>
 				</Card.Header>
 
-				<Card.Content class="mt-3 text-sm text-muted-foreground">
+				<Card.Content class="mt-3 line-clamp-3 text-sm text-muted-foreground">
 					{folder.description}
 				</Card.Content>
 

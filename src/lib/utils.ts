@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from 'clsx';
+import { formatDistanceToNow } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -46,6 +47,23 @@ export const slugify = (text: string): string => {
 		.replace(/[^a-z0-9]+/g, '-') // replace non-alphanumeric with hyphen
 		.replace(/^-+|-+$/g, ''); // remove leading/trailing hyphens
 };
+
+export const slugToText = (slug: string, capitalize = true): string => {
+	let text = slug.replace(/[-_]+/g, ' ').trim();
+
+	if (capitalize) {
+		text = text.replace(/\b\w/g, (char) => char.toUpperCase());
+	}
+
+	return text;
+};
+
+export const isDeadlinePassed = (deadline: Date) => {
+	const today = new Date();
+	return deadline < today;
+};
+
+export const formatAgo = (d: Date) => formatDistanceToNow(d, { addSuffix: true });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type WithoutChild<T> = T extends { child?: any } ? Omit<T, 'child'> : T;

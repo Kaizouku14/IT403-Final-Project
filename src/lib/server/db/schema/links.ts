@@ -1,7 +1,6 @@
 import { integer, sqliteTable, text, index } from 'drizzle-orm/sqlite-core';
 import { user } from './auth';
 import { sql } from 'drizzle-orm';
-import { FOLDERS } from '$lib/helper/constant.ts';
 
 export const links = sqliteTable(
 	'links',
@@ -70,7 +69,7 @@ export const clicks = sqliteTable(
 		browser: text('browser'),
 		ipAddress: text('ip_address'),
 		userAgent: text('user_agent'),
-		isQrScan: integer('is_qr_scan', { mode: 'boolean' }).notNull().default(false),
+		isQrScan: integer('is_qr_scan', { mode: 'boolean' }).notNull().default(true),
 		clickedAt: integer('clicked_at', { mode: 'timestamp' })
 			.notNull()
 			.default(sql`(unixepoch())`)

@@ -35,7 +35,10 @@
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
 	{#each stats as stat (stat.title)}
 		{@const Icon = stat.icon}
-		<div class="flex flex-col gap-2 rounded-xl border border-border bg-card p-4">
+		<div
+			class="flex flex-col gap-2 rounded-xl border border-border bg-card p-4 shadow-2xs
+"
+		>
 			<div class="flex items-center justify-between">
 				<h2 class="text-base font-bold">{stat.title}</h2>
 

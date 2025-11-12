@@ -12,7 +12,7 @@
 	import * as InputGroup from '$lib/components/ui/input-group/index.ts';
 	import * as Popover from '$lib/components/ui/popover/index.ts';
 
-	let { data }: { data: { form: SuperValidated<Infer<FormSchema>> } } = $props();
+	let data: { form: SuperValidated<Infer<FormSchema>> } = $props();
 	let open = $state(false);
 	const form = superForm(data.form, {
 		validators: zod4Client(formSchema),
