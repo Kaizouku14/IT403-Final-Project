@@ -5,7 +5,8 @@ export const formSchema = z.object({
 	customSlug: z.string().optional(),
 	title: z.string().min(1, {
 		message: 'Please enter a title description'
-	})
+	}),
+	password: z.string().optional()
 });
 
 export type FormSchema = typeof formSchema;

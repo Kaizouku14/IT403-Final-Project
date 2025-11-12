@@ -1,12 +1,12 @@
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form/index.ts';
-	import { Input } from '$lib/components/ui/input/index.ts';
 	import { formSchema, type FormSchema } from '$lib/components/schema/auth-link.ts';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import { Lock } from '@lucide/svelte';
 	import { Spinner } from '$lib/components/ui/spinner';
 	import { toast } from 'svelte-sonner';
+	import { Input } from '$lib/components/ui/input';
 
 	export let data: { form: SuperValidated<Infer<FormSchema>> };
 
@@ -52,7 +52,6 @@
 									type="password"
 									bind:value={$formData.password}
 									placeholder="Enter password"
-									class="bg-input pr-10 text-sm"
 								/>
 							{/snippet}
 						</Form.Control>

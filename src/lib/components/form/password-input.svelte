@@ -2,7 +2,7 @@
 	import { Eye, EyeClosed } from '@lucide/svelte';
 	import { Input } from '../ui/input';
 
-	let { id = '', placeholder = '', password = $bindable() } = $props();
+	let { id, placeholder, password = $bindable() } = $props();
 	let showPassword = $state(false);
 
 	const toggleShowPassword = () => {

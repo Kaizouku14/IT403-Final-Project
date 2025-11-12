@@ -3,9 +3,7 @@
 	import { Button } from '../ui/button';
 	import {
 		Copy,
-		Trash2Icon,
 		ChartColumnIncreasing,
-		ScanQrCode,
 		Lock,
 		Calendar,
 		Clock,
@@ -17,17 +15,14 @@
 	import { format } from 'date-fns';
 	import { env } from '$env/dynamic/public';
 	import { toast } from 'svelte-sonner';
+	import QrCode from '$lib/components/dialog/qr.svelte';
+	import DeleteLink from '$lib/components/dialog/delete.svelte';
 
 	export let links: Links;
 
 	const handleCopy = () => {
 		navigator.clipboard.writeText(`${env.PUBLIC_BASE_URL}/${links.shortCode}`);
 		toast.success('Link copied to clipboard');
-	};
-
-	const handleDelete = () => {
-		// Implement delete logic
-		console.log('Delete link');
 	};
 
 	const isPassed = isDeadlinePassed(links.expireAt);
@@ -139,23 +134,8 @@
 			>
 				<ChartColumnIncreasing class="size-4" />
 			</Button>
-			<Button
-				variant="ghost"
-				size="icon"
-				class="size-9 hover:bg-primary/10 hover:text-primary"
-				title="Show QR code"
-			>
-				<ScanQrCode class="size-4" />
-			</Button>
-			<Button
-				variant="ghost"
-				size="icon"
-				class="size-9 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/30"
-				onclick={handleDelete}
-				title="Delete link"
-			>
-				<Trash2Icon class="size-4" />
-			</Button>
+			<QrCode imageData={links.imageData} format={links.format} size={links.size} />
+			<DeleteLink linkName={links.title} linkId={links.linksId} />
 		</div>
 	</div>
 

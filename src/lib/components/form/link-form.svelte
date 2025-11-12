@@ -19,13 +19,13 @@
 		onUpdate: ({ form: f }) => {
 			if (f.valid) {
 				open = false;
-				toast.success('Link created successfully!');
-			} else {
-				toast.error('Please fill in all required fields.');
+				toast.success('Folder Created Succesfully');
 			}
+		},
+		onError: ({ result }) => {
+			toast.success(result.error.message);
 		}
 	});
-
 	const { form: formData, enhance, submitting } = form;
 </script>
 
@@ -113,6 +113,22 @@
 					{/snippet}
 				</Form.Control>
 				<Form.Description>Short label for your link.</Form.Description>
+				<Form.FieldErrors />
+			</Form.Field>
+
+			<Form.Field {form} name="password">
+				<Form.Control>
+					{#snippet children({ props })}
+						<Form.Label>Password (optional)</Form.Label>
+						<Input
+							{...props}
+							type="password"
+							bind:value={$formData.password}
+							placeholder="••••••••"
+						/>
+					{/snippet}
+				</Form.Control>
+				<Form.Description>Enter a name for your folder.</Form.Description>
 				<Form.FieldErrors />
 			</Form.Field>
 

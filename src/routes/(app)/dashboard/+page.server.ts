@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types.ts';
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
-import { fail } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 import { db, eq, count } from '$lib/server/db/index.ts';
 import { links as LinksTable, folders as FoldersTable } from '$lib/server/db/schema/index.ts';
 import { formSchema } from '$lib/components/schema/folder.ts';
@@ -45,7 +45,7 @@ export const actions: Actions = {
 		}
 
 		const user = event.locals.user;
-		if (!user) return fail(401, { message: 'Unauthorized' });
+		if (!user) return error(401, { message: 'Unauthorized' });
 
 		const { folder, description, color } = form.data;
 
