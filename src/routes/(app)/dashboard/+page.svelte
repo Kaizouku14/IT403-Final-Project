@@ -8,9 +8,10 @@
 	import type { Folder } from '$lib/interfaces/folder';
 	import StatCard from '$lib/components/card/stat-card.svelte';
 	import FolderCard from '$lib/components/card/folder-card.svelte';
+	import FolderForm from '$lib/components/form/folder-form.svelte';
 
 	export let data: PageData;
-	const { user, folderAndLinks } = data;
+	const { user, form, folders } = data;
 
 	const folderValues: Record<folderTypes, Folder> = {
 		Personal: { noOfLinks: 5, updatedAt: new Date('2025-11-09T10:00:00') },
@@ -27,6 +28,7 @@
 <section class="flex w-full flex-col gap-6 px-6 py-4">
 	<div class="flex items-center justify-between">
 		<WelcomeBanner {user} />
+		<FolderForm {form} />
 	</div>
 	<StatCard values={{ totalLinks: 10, totalScans: 10, totalClicks: 10, avgDailyClicks: 10 }} />
 

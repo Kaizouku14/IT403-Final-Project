@@ -13,11 +13,12 @@
 	import * as Popover from '$lib/components/ui/popover/index.ts';
 
 	let { data }: { data: { form: SuperValidated<Infer<FormSchema>> } } = $props();
-
+	let open = $state(false);
 	const form = superForm(data.form, {
 		validators: zod4Client(formSchema),
 		onUpdate: ({ form: f }) => {
 			if (f.valid) {
+				open = false;
 				toast.success('Link created successfully!');
 			} else {
 				toast.error('Please fill in all required fields.');
@@ -28,7 +29,8 @@
 	const { form: formData, enhance, submitting } = form;
 </script>
 
-<Dialog.Root>
+<!-- Not bindable, I handle it manually via onOpenChange -->
+<Dialog.Root {open} onOpenChange={(e) => (open = e.valueOf())}>
 	<Dialog.Trigger class={buttonVariants({ variant: 'default' })}>
 		<PlusIcon class="size-4" />
 		<span class="font-bold">Create Link</span>

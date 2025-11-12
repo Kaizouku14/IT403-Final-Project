@@ -40,7 +40,9 @@ export const folders = sqliteTable(
 		userId: text('user_id')
 			.notNull()
 			.references(() => user.id, { onDelete: 'cascade' }),
-		name: text('name', { enum: FOLDERS }).notNull(),
+		name: text('name').notNull(),
+		description: text('description'),
+		color: text('color'),
 		createdAt: integer('created_at', { mode: 'timestamp' })
 			.notNull()
 			.default(sql`(unixepoch())`),
