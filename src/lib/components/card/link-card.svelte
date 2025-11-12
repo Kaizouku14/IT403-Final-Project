@@ -94,7 +94,7 @@
 
 			<Card.Description class="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
 				<Link2 class="size-3 shrink-0" />
-				<span class="truncate">${links.destinationUrl}</span>
+				<span class="truncate">{links.destinationUrl}</span>
 			</Card.Description>
 		</div>
 	</Card.Header>
