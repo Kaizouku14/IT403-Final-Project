@@ -4,20 +4,12 @@
 	import * as Empty from '$lib/components/ui/empty/index.ts';
 	import { Link2Off } from '@lucide/svelte';
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
-	import type { folderTypes } from '$lib/helper/constant';
-	import type { Folder } from '$lib/interfaces/folder';
 	import StatCard from '$lib/components/card/stat-card.svelte';
 	import FolderCard from '$lib/components/card/folder-card.svelte';
 	import FolderForm from '$lib/components/form/folder-form.svelte';
 
 	export let data: PageData;
 	const { user, form, folders } = data;
-
-	const folderValues: Record<folderTypes, Folder> = {
-		Personal: { noOfLinks: 5, updatedAt: new Date('2025-11-09T10:00:00') },
-		Marketing: { noOfLinks: 12, updatedAt: new Date('2025-11-10T12:30:00') },
-		Development: { noOfLinks: 8, updatedAt: new Date('2025-11-11T08:15:00') }
-	};
 </script>
 
 <svelte:head>
@@ -38,10 +30,10 @@
 			<Tabs.Trigger value="links" class="text-sm font-bold">Summary</Tabs.Trigger>
 		</Tabs.List>
 		<Tabs.Content value="folders" class="py-2">
-			<FolderCard {folderValues} />
+			<FolderCard {folders} />
 		</Tabs.Content>
 		<Tabs.Content value="links" class="rounded-md border border-border bg-card">
-			{#if folderAndLinks.length > 0}
+			{#if folders.length > 0}
 				<p>too hot!</p>
 			{:else}
 				<Empty.Root>

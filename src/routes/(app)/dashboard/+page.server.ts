@@ -2,7 +2,7 @@ import type { Actions, PageServerLoad } from './$types.ts';
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { fail } from '@sveltejs/kit';
-import { db, eq } from '$lib/server/db/index.ts';
+import { db, eq, count } from '$lib/server/db/index.ts';
 import { links as LinksTable, folders as FoldersTable } from '$lib/server/db/schema/index.ts';
 import { formSchema } from '$lib/components/schema/folder.ts';
 import { generateId } from '$lib/helper/helper.ts';
@@ -11,10 +11,19 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const user = locals.user!;
 
 	const folders = await db
-		.select()
+		.select({
+			id: FoldersTable.id,
+			folder: FoldersTable.name,
+			description: FoldersTable.description,
+			color: FoldersTable.color,
+			createdAt: FoldersTable.createdAt,
+			updatedAt: FoldersTable.updatedAt,
+			noOfLinks: count(LinksTable.id)
+		})
 		.from(FoldersTable)
 		.leftJoin(LinksTable, eq(FoldersTable.id, LinksTable.folderId))
 		.where(eq(FoldersTable.userId, user.id))
+		.groupBy(FoldersTable.id)
 		.execute();
 
 	const form = await superValidate(zod4(formSchema));
