@@ -4,7 +4,8 @@ export enum pageRoutes {
 	FORGOT_PASSWORD = '/forgot-password',
 	DASHBOARD = '/dashboard',
 	AUTH_LINK = '/auth-link/[shortCode]',
-	FOLDER = '/folder/[folderId]/[slug]'
+	FOLDER = '/folder/[folderId]/[slug]',
+	LINK = `${FOLDER}/link/[linkId]`
 }
 
 export enum socialProviders {

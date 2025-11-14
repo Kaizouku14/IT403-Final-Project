@@ -17,6 +17,9 @@
 	import { toast } from 'svelte-sonner';
 	import QrCode from '$lib/components/dialog/qr.svelte';
 	import DeleteLink from '$lib/components/dialog/delete-link.svelte';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
+	import { pageRoutes } from '$lib/helper/enums';
 
 	export let links: Links;
 	export let slug: string;
@@ -132,6 +135,14 @@
 				size="icon"
 				class="size-9 hover:bg-primary/10 hover:text-primary"
 				title="View analytics"
+				onclick={() =>
+					goto(
+						resolve(pageRoutes.LINK, {
+							folderId: links.folderId,
+							slug,
+							linkId: links.linksId
+						})
+					)}
 			>
 				<ChartColumnIncreasing class="size-4" />
 			</Button>

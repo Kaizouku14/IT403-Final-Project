@@ -1,4 +1,4 @@
-import { db, eq, and, gt } from '../server/db';
+import { db, eq, and } from '../server/db';
 import { links as LinksTable, clicks as ClicksTable } from '../server/db/schema';
 import { categorizeReferrer } from '$lib/utils';
 import { UAParser } from 'ua-parser-js';
@@ -52,25 +52,18 @@ export const generateUniqueSlug = async (length: number = 4): Promise<string> =>
 	return slug;
 };
 
-export const getLink = async (shortCode: string) => {
-	const [links] = await db
-		.select({
-			linkId: LinksTable.id,
-			destinationUrl: LinksTable.destinationUrl,
-			password: LinksTable.password
-		})
-		.from(LinksTable)
-		.where(
-			and(
-				eq(LinksTable.shortCode, shortCode),
-				eq(LinksTable.isActive, true),
-				gt(LinksTable.expireAt, new Date())
-			)
-		)
-		.limit(1)
-		.execute();
+export const getLinkByShortCode = async (shortCode: string) => {
+	const link = await db.query.links.findFirst({
+		where: and(eq(LinksTable.shortCode, shortCode), eq(LinksTable.isActive, true))
+	});
 
-	return links;
+	if (!link) return null;
+
+	if (link.expireAt && link.expireAt < new Date()) {
+		return null;
+	}
+
+	return link;
 };
 
 export const trackClick = async (
