@@ -29,6 +29,16 @@
 		toast.success('Link copied to clipboard');
 	};
 
+	const handleView = () => {
+		goto(
+			resolve(pageRoutes.LINK, {
+				folderId: links.folderId,
+				slug,
+				linkId: links.linksId
+			})
+		);
+	};
+
 	const isPassed = isDeadlinePassed(links.expireAt);
 </script>
 
@@ -36,6 +46,7 @@
 	class="group relative max-w-full cursor-pointer overflow-hidden rounded-2xl border border-border/60 bg-linear-to-br from-background to-background/95 p-5 shadow-2xs transition-all
  duration-300 hover:border-primary/40"
 	style={`border-top: 3px solid ${links.folderColor}`}
+	onclick={handleView}
 >
 	<div class="absolute top-4 right-4">
 		{#if links.isActive}
@@ -135,14 +146,7 @@
 				size="icon"
 				class="size-9 hover:bg-primary/10 hover:text-primary"
 				title="View analytics"
-				onclick={() =>
-					goto(
-						resolve(pageRoutes.LINK, {
-							folderId: links.folderId,
-							slug,
-							linkId: links.linksId
-						})
-					)}
+				onclick={handleView}
 			>
 				<ChartColumnIncreasing class="size-4" />
 			</Button>

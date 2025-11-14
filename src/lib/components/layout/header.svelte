@@ -25,7 +25,7 @@
 
 <header class="flex h-15 w-full items-center justify-between p-6">
 	<a href={resolve(pageRoutes.DASHBOARD, {})}>
-		<h1 class="text-2xl font-black">Sniplink</h1>
+		<h1 class="text-2xl font-black">Zynkly</h1>
 	</a>
 
 	<div class="flex items-center gap-2">

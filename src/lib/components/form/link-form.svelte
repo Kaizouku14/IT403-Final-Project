@@ -90,7 +90,7 @@
 								</Popover.Content>
 							</Popover.Root>
 							<InputGroup.Addon class="pl-1.5 text-muted-foreground">
-								<InputGroup.Text>sniplink.com/</InputGroup.Text>
+								<InputGroup.Text>zynkly.vercel.app/</InputGroup.Text>
 							</InputGroup.Addon>
 							<InputGroup.Input
 								{...props}

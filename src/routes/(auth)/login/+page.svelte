@@ -62,9 +62,9 @@
 							<div class="flex size-8 items-center justify-center rounded-md">
 								<Link2 class="size-8" />
 							</div>
-							<span class="sr-only">Sniplink.</span>
+							<span class="sr-only">Zynkly.</span>
 						</a>
-						<h1 class="text-xl font-bold">Welcome to Sniplink.</h1>
+						<h1 class="text-xl font-bold">Welcome to Zynkly.</h1>
 						<FieldDescription>
 							Don't have an account? <a href={resolve(pageRoutes.SIGNUP, {})}>Sign up</a>
 						</FieldDescription>
