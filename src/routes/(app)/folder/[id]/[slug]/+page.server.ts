@@ -52,6 +52,7 @@ export const load: PageServerLoad = async ({ params }) => {
 	return {
 		form,
 		slug,
+		id,
 		links: links as Links[]
 	};
 };

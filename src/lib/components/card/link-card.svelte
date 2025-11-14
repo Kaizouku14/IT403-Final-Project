@@ -16,7 +16,7 @@
 	import { env } from '$env/dynamic/public';
 	import { toast } from 'svelte-sonner';
 	import QrCode from '$lib/components/dialog/qr.svelte';
-	import DeleteLink from '$lib/components/dialog/delete.svelte';
+	import DeleteLink from '$lib/components/dialog/delete-link.svelte';
 
 	export let links: Links;
 
@@ -135,7 +135,7 @@
 				<ChartColumnIncreasing class="size-4" />
 			</Button>
 			<QrCode imageData={links.imageData} format={links.format} size={links.size} />
-			<DeleteLink linkName={links.title} linkId={links.linksId} />
+			<DeleteLink id={links.id} name={links.title} />
 		</div>
 	</div>
 

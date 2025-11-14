@@ -6,6 +6,7 @@ import { db, eq, count } from '$lib/server/db/index.ts';
 import { links as LinksTable, folders as FoldersTable } from '$lib/server/db/schema/index.ts';
 import { formSchema } from '$lib/components/schema/folder.ts';
 import { generateId } from '$lib/helper/helper.ts';
+import type { Folder } from '$lib/interfaces/folder.ts';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = locals.user!;
@@ -30,7 +31,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	return {
 		form,
-		folders
+		folders: folders as Folder[]
 	};
 };
 

@@ -7,7 +7,7 @@
 	import FolderForm from '$lib/components/form/folder-form.svelte';
 
 	export let data: PageData;
-	const { user, form, folders } = data;
+	$: ({ user, form, folders } = data);
 </script>
 
 <svelte:head>

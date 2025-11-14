@@ -10,12 +10,14 @@
 	import { pageRoutes } from '$lib/helper/enums';
 	import * as InputGroup from '$lib/components/ui/input-group';
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
+	import DeleteFolder from '$lib/components/dialog/delete-folder.svelte';
 
 	export let data: PageData;
-	$: ({ form, links: LinksData, slug } = data);
+	$: ({ form, links: LinksData, slug, id } = data);
 
 	let query = '';
 	$: folderName = slugToText(slug);
+
 	const handleBackButton = () => {
 		goto(pageRoutes.DASHBOARD);
 	};
@@ -50,7 +52,10 @@
 			</div>
 		</div>
 
-		<LinkForm {form} />
+		<div class="flex items-center gap-2">
+			<LinkForm {form} />
+			<DeleteFolder {id} {folderName} />
+		</div>
 	</div>
 
 	<InputGroup.Root class="sm:max-w-120">
@@ -82,10 +87,7 @@
 					</Empty.Header>
 
 					<Empty.Content>
-						<div class="flex gap-2">
-							<LinkForm {form} />
-							<Button variant="outline" onclick={handleBackButton}>View Folders</Button>
-						</div>
+						<Button variant="outline" onclick={handleBackButton}>View Folders</Button>
 					</Empty.Content>
 				</Empty.Root>
 			</div>

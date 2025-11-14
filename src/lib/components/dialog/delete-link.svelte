@@ -3,13 +3,17 @@
 	import { Trash2Icon } from '@lucide/svelte';
 	import { buttonVariants } from '../ui/button';
 
-	let { linkName, linkId } = $props();
+	let { id, name } = $props();
+	let open = $state(false);
 
-	const handleDelete = async () => {};
+	const handleDeleteLink = async () => {
+		console.log(id);
+	};
 </script>
 
-<AlertDialog.Root>
+<AlertDialog.Root {open} onOpenChange={(e) => (open = e.valueOf())}>
 	<AlertDialog.Trigger
+		title="Delete Link"
 		class={buttonVariants({
 			variant: 'ghost',
 			size: 'icon',
@@ -20,9 +24,7 @@
 	</AlertDialog.Trigger>
 	<AlertDialog.Content>
 		<AlertDialog.Header>
-			<AlertDialog.Title class="font-bold text-red-600 dark:text-red-400"
-				>Delete {linkName}?</AlertDialog.Title
-			>
+			<AlertDialog.Title class="font-bold text-destructive">Delete {name}?</AlertDialog.Title>
 			<AlertDialog.Description>
 				Deleting this link is permanent and cannot be undone. All associated data, including click
 				statistics and QR codes, will be removed.
@@ -31,8 +33,8 @@
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
 			<AlertDialog.Action
-				onclick={handleDelete}
-				class="rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700 focus:ring-2 focus:ring-red-500 dark:bg-red-400 dark:hover:bg-red-500"
+				onclick={handleDeleteLink}
+				class="rounded-md bg-destructive px-4 py-2 text-white hover:bg-destructive/80 focus:ring-2 focus:ring-destructive"
 			>
 				Delete Link
 			</AlertDialog.Action>
