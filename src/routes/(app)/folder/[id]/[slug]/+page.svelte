@@ -29,7 +29,7 @@
 	<title>{folderName} | Folder</title>
 </svelte:head>
 
-<section class="flex min-h-[80vh] flex-col gap-6 p-6">
+<section class="flex min-h-[80vh] w-full flex-col gap-6 p-6">
 	<div class="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
 		<div class="flex items-center gap-3">
 			<Button
@@ -44,8 +44,8 @@
 
 			<div class="flex flex-col">
 				<small class="text-sm text-muted-foreground">Back to Dashboard</small>
-				<h2 class="max-w-[16rem] truncate text-xl leading-tight font-semibold md:max-w-none">
-					{folderName} Folder
+				<h2 class="max-w-[16rem] truncate text-xl leading-tight font-bold md:max-w-none">
+					{folderName}
 				</h2>
 			</div>
 		</div>
@@ -61,43 +61,34 @@
 		<InputGroup.Addon align="inline-end">{filteredData.length} results</InputGroup.Addon>
 	</InputGroup.Root>
 
-	{#if LinksData.length > 0}
-		<ScrollArea class="sm:max-h-120">
+	<ScrollArea class="h-96 md:h-120 ">
+		{#if filteredData.length > 0}
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-				{#if filteredData.length > 0}
-					{#each filteredData as links (links.linksId)}
-						<LinkCard {links} />
-					{/each}
-				{:else}
-					<div class="flex h-86 items-center justify-center">
-						<div class="flex flex-col items-center gap-3 text-center text-muted-foreground">
-							<Link2Off class="size-10 text-gray-400" />
-							<span class="text-base font-medium">No links found</span>
-						</div>
-					</div>
-				{/if}
+				{#each filteredData as links (links.linksId)}
+					<LinkCard {links} />
+				{/each}
 			</div>
-		</ScrollArea>
-	{:else}
-		<div class="flex flex-1 flex-col items-center justify-center">
-			<Empty.Root class="flex flex-col items-center gap-6">
-				<Empty.Header class="text-center">
-					<Empty.Media variant="icon">
-						<Link2Off class="size-6 text-muted-foreground" />
-					</Empty.Media>
-					<Empty.Title>No Links Yet</Empty.Title>
-					<Empty.Description>
-						You haven't created any link yet. Get started by creating your first link.
-					</Empty.Description>
-				</Empty.Header>
+		{:else}
+			<div class="flex h-full flex-1 flex-col items-center justify-center">
+				<Empty.Root class="flex flex-col items-center gap-6 ">
+					<Empty.Header class="text-center">
+						<Empty.Media variant="icon">
+							<Link2Off class="size-6 text-muted-foreground" />
+						</Empty.Media>
+						<Empty.Title>No Links Yet</Empty.Title>
+						<Empty.Description>
+							You haven't created any link yet. Get started by creating your first link.
+						</Empty.Description>
+					</Empty.Header>
 
-				<Empty.Content>
-					<div class="flex gap-2">
-						<LinkForm {form} />
-						<Button variant="outline" onclick={handleBackButton}>View Folders</Button>
-					</div>
-				</Empty.Content>
-			</Empty.Root>
-		</div>
-	{/if}
+					<Empty.Content>
+						<div class="flex gap-2">
+							<LinkForm {form} />
+							<Button variant="outline" onclick={handleBackButton}>View Folders</Button>
+						</div>
+					</Empty.Content>
+				</Empty.Root>
+			</div>
+		{/if}
+	</ScrollArea>
 </section>

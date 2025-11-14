@@ -17,7 +17,7 @@ export const verifyPassword = async (password: string, hashed: string): Promise<
 };
 
 export function generateId(): string {
-	return nanoid(16);
+	return nanoid(8);
 }
 
 export const isSlugTaken = async (slug: string): Promise<boolean> => {

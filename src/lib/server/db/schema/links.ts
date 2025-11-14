@@ -97,24 +97,3 @@ export const qrCodes = sqliteTable(
 	},
 	(table) => [index('qr_link_id_idx').on(table.linkId)]
 );
-
-export const linkAnalyticsSummary = sqliteTable(
-	'link_analytics_summary',
-	{
-		id: text('id').primaryKey(),
-		linkId: text('link_id')
-			.notNull()
-			.references(() => links.id, { onDelete: 'cascade' }),
-		date: text('date').notNull(),
-		totalClicks: integer('total_clicks').notNull().default(0),
-		uniqueClicks: integer('unique_clicks').notNull().default(0),
-		qrScans: integer('qr_scans').notNull().default(0),
-		topReferrers: text('top_referrers', { mode: 'json' }),
-		topCountries: text('top_countries', { mode: 'json' }),
-		deviceBreakdown: text('device_breakdown', { mode: 'json' }),
-		createdAt: integer('created_at', { mode: 'timestamp' })
-			.notNull()
-			.default(sql`(unixepoch())`)
-	},
-	(table) => [index('link_id_date_idx').on(table.linkId, table.date)]
-);
