@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { pageRoutes } from '$lib/helper/enums';
 	import { page } from '$app/state';
+	import { resolve } from '$app/paths';
 
 	const { error, status } = page;
 </script>
@@ -25,7 +26,7 @@
 		</p>
 
 		<a
-			href={pageRoutes.DASHBOARD}
+			href={resolve(pageRoutes.DASHBOARD, {})}
 			class="mt-4 inline-flex items-center justify-center rounded-md bg-primary px-6 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
 		>
 			Go Back

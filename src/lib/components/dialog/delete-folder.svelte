@@ -5,6 +5,7 @@
 	import { toast } from 'svelte-sonner';
 	import { goto } from '$app/navigation';
 	import { pageRoutes } from '$lib/helper/enums';
+	import { resolve } from '$app/paths';
 
 	let { folderId, folderName } = $props();
 	let open = $state(false);
@@ -16,7 +17,7 @@
 
 		if (response.ok) {
 			open = false;
-			goto(pageRoutes.DASHBOARD);
+			goto(resolve(pageRoutes.DASHBOARD, {}));
 			toast.success('Folder deleted successfully');
 		} else {
 			toast.error('Failed to delete folder');

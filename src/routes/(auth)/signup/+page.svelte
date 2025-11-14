@@ -13,6 +13,7 @@
 	import { toast } from 'svelte-sonner';
 	import { authClient } from '$lib/auth-client';
 	import SocialProvider from '$lib/components/form/social-provider.svelte';
+	import { resolve } from '$app/paths';
 
 	let username = $state('');
 	let email = $state('');
@@ -56,7 +57,10 @@
 			<form onsubmit={handleSignUp}>
 				<FieldGroup>
 					<div class="flex flex-col items-center gap-2 text-center">
-						<a href={pageRoutes.LOGIN} class="flex flex-col items-center gap-2 font-medium">
+						<a
+							href={resolve(pageRoutes.LOGIN, {})}
+							class="flex flex-col items-center gap-2 font-medium"
+						>
 							<div class="flex size-8 items-center justify-center rounded-md">
 								<Link2 class="size-8" />
 							</div>
@@ -64,7 +68,7 @@
 						</a>
 						<h1 class="text-xl font-bold">Welcome to Sniplink.</h1>
 						<FieldDescription>
-							Already have an account? <a href={pageRoutes.LOGIN}>Sign in</a>
+							Already have an account? <a href={resolve(pageRoutes.LOGIN, {})}>Sign in</a>
 						</FieldDescription>
 					</div>
 					<div class="flex flex-col gap-2">

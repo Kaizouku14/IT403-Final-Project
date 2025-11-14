@@ -14,6 +14,7 @@
 	import { authClient } from '$lib/auth-client';
 	import PasswordInput from '$lib/components/form/password-input.svelte';
 	import SocialProvider from '$lib/components/form/social-provider.svelte';
+	import { resolve } from '$app/paths';
 
 	let email = $state('');
 	let password = $state('');
@@ -54,7 +55,10 @@
 			<form onsubmit={handleEmailLogin}>
 				<FieldGroup>
 					<div class="flex flex-col items-center gap-2 text-center">
-						<a href={pageRoutes.LOGIN} class="flex flex-col items-center gap-2 font-medium">
+						<a
+							href={resolve(pageRoutes.LOGIN, {})}
+							class="flex flex-col items-center gap-2 font-medium"
+						>
 							<div class="flex size-8 items-center justify-center rounded-md">
 								<Link2 class="size-8" />
 							</div>
@@ -62,7 +66,7 @@
 						</a>
 						<h1 class="text-xl font-bold">Welcome to Sniplink.</h1>
 						<FieldDescription>
-							Don't have an account? <a href={pageRoutes.SIGNUP}>Sign up</a>
+							Don't have an account? <a href={resolve(pageRoutes.SIGNUP, {})}>Sign up</a>
 						</FieldDescription>
 					</div>
 					<div class="flex flex-col gap-4">
@@ -80,7 +84,7 @@
 							<div class="flex items-center justify-between">
 								<FieldLabel for="password">Password</FieldLabel>
 								<a
-									href={pageRoutes.FORGOT_PASSWORD}
+									href={resolve(pageRoutes.FORGOT_PASSWORD, {})}
 									class="text-sm text-muted-foreground underline"
 								>
 									Forgot password?

@@ -11,6 +11,7 @@
 	import * as InputGroup from '$lib/components/ui/input-group';
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
 	import DeleteFolder from '$lib/components/dialog/delete-folder.svelte';
+	import { resolve } from '$app/paths';
 
 	export let data: PageData;
 	$: ({ form, links: LinksData, slug, folderId } = data);
@@ -19,7 +20,7 @@
 	$: folderName = slugToText(slug);
 
 	const handleBackButton = () => {
-		goto(pageRoutes.DASHBOARD);
+		goto(resolve(pageRoutes.DASHBOARD, {}));
 	};
 
 	$: filteredData = query
