@@ -19,6 +19,7 @@
 	import DeleteLink from '$lib/components/dialog/delete-link.svelte';
 
 	export let links: Links;
+	export let slug: string;
 
 	const handleCopy = () => {
 		navigator.clipboard.writeText(`${env.PUBLIC_BASE_URL}/${links.shortCode}`);
@@ -135,7 +136,7 @@
 				<ChartColumnIncreasing class="size-4" />
 			</Button>
 			<QrCode imageData={links.imageData} format={links.format} size={links.size} />
-			<DeleteLink linkId={links.linksId} name={links.title} />
+			<DeleteLink folderId={links.folderId} {slug} linkId={links.linksId} name={links.title} />
 		</div>
 	</div>
 

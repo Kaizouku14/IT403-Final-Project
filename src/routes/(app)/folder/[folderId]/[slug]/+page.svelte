@@ -70,7 +70,7 @@
 		{#if filteredData.length > 0}
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 				{#each filteredData as links (links.linksId)}
-					<LinkCard {links} />
+					<LinkCard {links} {slug} />
 				{/each}
 			</div>
 		{:else}

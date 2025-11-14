@@ -71,7 +71,7 @@ export const actions: Actions = {
 			});
 		}
 
-		const folderId = event.params.id;
+		const { folderId } = event.params;
 		if (!folderId) {
 			return error(400, {
 				message: 'Folder ID is required'
@@ -161,6 +161,13 @@ export const actions: Actions = {
 					format: 'png',
 					size: 300
 				});
+
+				await tx
+					.update(FoldersTable)
+					.set({
+						updatedAt: new Date()
+					})
+					.where(eq(FoldersTable.id, folderId));
 			});
 
 			return message(form, {

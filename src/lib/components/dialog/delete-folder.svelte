@@ -36,7 +36,7 @@
 	</AlertDialog.Trigger>
 	<AlertDialog.Content>
 		<AlertDialog.Header>
-			<AlertDialog.Title class="font-bold text-destructive">Delete {folderName}?</AlertDialog.Title>
+			<AlertDialog.Title class="font-bold">Delete {folderName}?</AlertDialog.Title>
 			<AlertDialog.Description>
 				Deleting this folder is permanent and cannot be undone. All associated links in this folder,
 				will be removed.

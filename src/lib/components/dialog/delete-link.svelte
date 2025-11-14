@@ -2,16 +2,20 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.ts';
 	import { Trash2Icon } from '@lucide/svelte';
 	import { buttonVariants } from '../ui/button';
+	import { toast } from 'svelte-sonner';
 
-	let { linkId, name } = $props();
+	let { folderId, slug, linkId, name } = $props();
 	let open = $state(false);
 
 	const handleDeleteLink = async () => {
-		const response = await fetch(`/api/link/${linkId}`, {
+		const response = await fetch(`/folder/${folderId}/${slug}/link/${linkId}`, {
 			method: 'DELETE'
 		});
 		if (response.ok) {
 			open = false;
+			toast.success('Link deleted successfully');
+		} else {
+			toast.error('Failed to delete link');
 		}
 	};
 </script>
@@ -29,7 +33,7 @@
 	</AlertDialog.Trigger>
 	<AlertDialog.Content>
 		<AlertDialog.Header>
-			<AlertDialog.Title class="font-bold text-destructive">Delete {name}?</AlertDialog.Title>
+			<AlertDialog.Title class="font-bold">Delete {name}?</AlertDialog.Title>
 			<AlertDialog.Description>
 				Deleting this link is permanent and cannot be undone. All associated data, including click
 				statistics and QR codes, will be removed.

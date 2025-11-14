@@ -24,7 +24,7 @@
 					onclick={() =>
 						goto(
 							resolve(pageRoutes.FOLDER, {
-								id: folder.id,
+								folderId: folder.id,
 								slug: slugify(folder.name)
 							})
 						)}
