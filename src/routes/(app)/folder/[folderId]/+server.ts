@@ -3,10 +3,10 @@ import { folders as FoldersTable } from '$lib/server/db/schema/index.ts';
 import { db, eq } from '$lib/server/db';
 
 export const DELETE: RequestHandler = async ({ params }) => {
-	const { id } = params;
+	const { folderId } = params;
 
 	try {
-		await db.delete(FoldersTable).where(eq(FoldersTable.id, id));
+		await db.delete(FoldersTable).where(eq(FoldersTable.id, folderId));
 
 		return new Response('Folder deleted successfully', { status: 200 });
 	} catch (error) {

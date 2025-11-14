@@ -3,11 +3,16 @@
 	import { Trash2Icon } from '@lucide/svelte';
 	import { buttonVariants } from '../ui/button';
 
-	let { id, name } = $props();
+	let { linkId, name } = $props();
 	let open = $state(false);
 
 	const handleDeleteLink = async () => {
-		console.log(id);
+		const response = await fetch(`/api/link/${linkId}`, {
+			method: 'DELETE'
+		});
+		if (response.ok) {
+			open = false;
+		}
 	};
 </script>
 

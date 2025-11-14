@@ -6,11 +6,11 @@
 	import { goto } from '$app/navigation';
 	import { pageRoutes } from '$lib/helper/enums';
 
-	let { id, folderName } = $props();
+	let { folderId, folderName } = $props();
 	let open = $state(false);
 
 	const handleDeleteFolder = async () => {
-		const response = await fetch(`/folder/${id}`, {
+		const response = await fetch(`/folder/${folderId}`, {
 			method: 'DELETE'
 		});
 

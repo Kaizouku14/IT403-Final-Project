@@ -16,7 +16,7 @@ import { env } from '$env/dynamic/public';
 import QRCode from 'qrcode';
 
 export const load: PageServerLoad = async ({ params }) => {
-	const { slug, id } = params;
+	const { slug, folderId } = params;
 	const form = await superValidate(zod4(formSchema));
 
 	const links = await db
@@ -44,7 +44,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		.leftJoin(FoldersTable, eq(LinksTable.folderId, FoldersTable.id))
 		.leftJoin(ClicksTable, eq(LinksTable.id, ClicksTable.linkId))
 		.leftJoin(qrCodesTable, eq(LinksTable.id, qrCodesTable.linkId))
-		.where(eq(FoldersTable.id, id))
+		.where(eq(FoldersTable.id, folderId))
 		.groupBy(LinksTable.id)
 		.orderBy(desc(LinksTable.createdAt))
 		.execute();
@@ -52,7 +52,7 @@ export const load: PageServerLoad = async ({ params }) => {
 	return {
 		form,
 		slug,
-		id,
+		folderId,
 		links: links as Links[]
 	};
 };

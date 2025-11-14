@@ -135,7 +135,7 @@
 				<ChartColumnIncreasing class="size-4" />
 			</Button>
 			<QrCode imageData={links.imageData} format={links.format} size={links.size} />
-			<DeleteLink id={links.id} name={links.title} />
+			<DeleteLink linkId={links.linksId} name={links.title} />
 		</div>
 	</div>
 

@@ -13,7 +13,7 @@
 	import DeleteFolder from '$lib/components/dialog/delete-folder.svelte';
 
 	export let data: PageData;
-	$: ({ form, links: LinksData, slug, id } = data);
+	$: ({ form, links: LinksData, slug, folderId } = data);
 
 	let query = '';
 	$: folderName = slugToText(slug);
@@ -54,7 +54,7 @@
 
 		<div class="flex items-center gap-2">
 			<LinkForm {form} />
-			<DeleteFolder {id} {folderName} />
+			<DeleteFolder {folderId} {folderName} />
 		</div>
 	</div>
 
