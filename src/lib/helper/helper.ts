@@ -98,3 +98,63 @@ export const trackClick = async (
 		console.error('Error tracking click:', error);
 	}
 };
+
+// export const getLinkAnalytics = async (linkId: string, days = 30) => {
+// 	const startDate = Math.floor(Date.now() / 1000) - days * 24 * 60 * 60;
+
+// 	const clickData = await db.query.clicks.findMany({
+// 		where: and(eq(ClicksTable.linkId, linkId), sql`${ClicksTable.clickedAt} >= ${startDate}`)
+// 	});
+
+// 	// Aggregate data
+// 	const totalClicks = clickData.length;
+// 	const qrScans = clickData.filter((c) => c.isQrScan).length;
+
+// 	// Device breakdown
+// 	const deviceBreakdown = clickData.reduce(
+// 		(acc, click) => {
+// 			acc[click.device || 'unknown'] = (acc[click.device || 'unknown'] || 0) + 1;
+// 			return acc;
+// 		},
+// 		{} as Record<string, number>
+// 	);
+
+// 	// Referrer breakdown
+// 	const referrerBreakdown = clickData.reduce(
+// 		(acc, click) => {
+// 			const source = click.referrerSource || 'direct';
+// 			acc[source] = (acc[source] || 0) + 1;
+// 			return acc;
+// 		},
+// 		{} as Record<string, number>
+// 	);
+
+// 	// Country breakdown
+// 	const countryBreakdown = clickData.reduce(
+// 		(acc, click) => {
+// 			const country = click.country || 'unknown';
+// 			acc[country] = (acc[country] || 0) + 1;
+// 			return acc;
+// 		},
+// 		{} as Record<string, number>
+// 	);
+
+// 	// Clicks over time (daily)
+// 	const clicksByDay = clickData.reduce(
+// 		(acc, click) => {
+// 			const date = click.clickedAt.toISOString().split('T')[0];
+// 			acc[date] = (acc[date] || 0) + 1;
+// 			return acc;
+// 		},
+// 		{} as Record<string, number>
+// 	);
+
+// 	return {
+// 		totalClicks,
+// 		qrScans,
+// 		deviceBreakdown,
+// 		referrerBreakdown,
+// 		countryBreakdown,
+// 		clicksByDay
+// 	};
+// };

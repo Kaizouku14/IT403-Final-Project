@@ -1,13 +1,22 @@
 <script lang="ts">
 	import WelcomeBanner from '$lib/components/layout/welcome-banner.svelte';
 	import type { PageData } from './$types';
-	import * as Tabs from '$lib/components/ui/tabs/index.js';
 	import StatCard from '$lib/components/card/stat-card.svelte';
 	import FolderCard from '$lib/components/card/folder-card.svelte';
 	import FolderForm from '$lib/components/form/folder-form.svelte';
+	import * as InputGroup from '$lib/components/ui/input-group';
+	import { SearchIcon } from '@lucide/svelte';
+	import { ScrollArea } from '$lib/components/ui/scroll-area';
+	import * as Empty from '$lib/components/ui/empty/index.ts';
+	import { Folder as FolderIcon } from '@lucide/svelte';
 
 	export let data: PageData;
 	$: ({ user, form, folders } = data);
+
+	let query = '';
+	$: filteredData = query
+		? data.folders.filter((link) => link.name.toLowerCase().includes(query.toLowerCase()))
+		: folders;
 </script>
 
 <svelte:head>
@@ -22,14 +31,33 @@
 	</div>
 	<StatCard values={{ totalLinks: 10, totalScans: 10, totalClicks: 10, avgDailyClicks: 10 }} />
 
-	<Tabs.Root value="folders">
-		<Tabs.List>
-			<Tabs.Trigger value="folders" class="text-sm font-bold">Folders</Tabs.Trigger>
-			<Tabs.Trigger value="links" class="text-sm font-bold">Summary</Tabs.Trigger>
-		</Tabs.List>
-		<Tabs.Content value="folders" class="py-2">
-			<FolderCard {folders} />
-		</Tabs.Content>
-		<Tabs.Content value="links" class="rounded-md border border-border bg-card"></Tabs.Content>
-	</Tabs.Root>
+	<InputGroup.Root class="sm:max-w-96">
+		<InputGroup.Input placeholder="Search..." bind:value={query} />
+		<InputGroup.Addon>
+			<SearchIcon />
+		</InputGroup.Addon>
+		<InputGroup.Addon align="inline-end">{filteredData.length} results</InputGroup.Addon>
+	</InputGroup.Root>
+
+	<ScrollArea class="max-h-96">
+		{#if filteredData.length > 0}
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+				{#each filteredData as folder (folder.id)}
+					<FolderCard {folder} />
+				{/each}
+			</div>
+		{:else}
+			<Empty.Root>
+				<Empty.Header>
+					<Empty.Media variant="icon">
+						<FolderIcon />
+					</Empty.Media>
+					<Empty.Title>No Folders Yet</Empty.Title>
+					<Empty.Description>
+						You haven't created any folder yet. Get started by creating your first folder.
+					</Empty.Description>
+				</Empty.Header>
+			</Empty.Root>
+		{/if}
+	</ScrollArea>
 </section>
