@@ -12,3 +12,9 @@ export enum socialProviders {
 	GOOGLE = 'google',
 	ROBLOX = 'roblox'
 }
+
+export enum DEVICE {
+	MOBILE = 'Mobile',
+	TABLET = 'Tablet',
+	DESKTOP = 'Desktop'
+}
