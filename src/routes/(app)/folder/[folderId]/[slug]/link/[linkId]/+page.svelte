@@ -9,6 +9,9 @@
 	import { toast } from 'svelte-sonner';
 	import LinkStatsCard from '$lib/components/card/link-stats.svelte';
 	import { Spinner } from '$lib/components/ui/spinner/index.ts';
+	import { resolve } from '$app/paths';
+	import { goto } from '$app/navigation';
+	import { pageRoutes } from '$lib/helper/enums';
 
 	export let data: PageData;
 	const { link } = data;
@@ -40,7 +43,19 @@
 <section class="flex min-h-[80vh] w-full flex-col gap-6 p-6">
 	<div class="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
 		<div class="flex items-center gap-3">
-			<Button variant="outline" size="icon" title="Back to Dashboard" class="shrink-0">
+			<Button
+				variant="outline"
+				size="icon"
+				title="Back to Dashboard"
+				class="shrink-0"
+				onclick={() =>
+					goto(
+						resolve(pageRoutes.FOLDER, {
+							folderId: link.folderId,
+							slug: link.folderName
+						})
+					)}
+			>
 				<ChevronLeft class="size-5" />
 			</Button>
 
@@ -61,7 +76,6 @@
 					<Select.Item value="90">Last 90 Days</Select.Item>
 				</Select.Content>
 			</Select.Root>
-			<!-- Delete Link Button -->
 		</div>
 	</div>
 	{#if analyticsData}

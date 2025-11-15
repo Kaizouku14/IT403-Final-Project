@@ -9,7 +9,6 @@ export const load: PageServerLoad = async ({ params }) => {
 	const [link] = await db
 		.select({
 			id: LinksTable.id,
-			url: LinksTable.shortCode,
 			name: LinksTable.title,
 			folderId: LinksTable.folderId,
 			folderName: FolderTable.name

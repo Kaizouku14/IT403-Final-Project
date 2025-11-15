@@ -3,7 +3,11 @@ import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { error, fail } from '@sveltejs/kit';
 import { db, eq, count } from '$lib/server/db/index.ts';
-import { links as LinksTable, folders as FoldersTable } from '$lib/server/db/schema/index.ts';
+import {
+	links as LinksTable,
+	folders as FoldersTable,
+	clicks as ClicksTable
+} from '$lib/server/db/schema/index.ts';
 import { formSchema } from '$lib/components/schema/folder.ts';
 import { generateId } from '$lib/helper/helper.ts';
 import type { Folder } from '$lib/interfaces/folder.ts';
@@ -27,11 +31,41 @@ export const load: PageServerLoad = async ({ locals }) => {
 		.groupBy(FoldersTable.id)
 		.execute();
 
+	const clickData = await db
+		.select({
+			id: ClicksTable.id,
+			linkId: ClicksTable.linkId,
+			isQrScan: ClicksTable.isQrScan,
+			clickedAt: ClicksTable.clickedAt
+		})
+		.from(ClicksTable)
+		.leftJoin(LinksTable, eq(ClicksTable.linkId, LinksTable.id))
+		.where(eq(LinksTable.userId, user.id))
+		.execute();
+
+	const totalLinks = folders.reduce((acc, f) => acc + Number(f.noOfLinks), 0);
+	const totalScans = clickData.filter((c) => c.isQrScan).length;
+	const totalClicks = clickData.length;
+
+	const clicksByDay: Record<string, number> = {};
+	clickData.forEach((c) => {
+		const date = c.clickedAt.toISOString().split('T')[0];
+		clicksByDay[date] = (clicksByDay[date] || 0) + 1;
+	});
+	const days = Object.keys(clicksByDay).length || 1;
+	const avgDailyClicks = Math.round(totalClicks / days);
+
 	const form = await superValidate(zod4(formSchema));
 
 	return {
 		form,
-		folders: folders as Folder[]
+		folders: folders as Folder[],
+		summary: {
+			totalLinks,
+			totalScans,
+			totalClicks,
+			avgDailyClicks
+		}
 	};
 };
 

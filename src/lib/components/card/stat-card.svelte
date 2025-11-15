@@ -1,31 +1,29 @@
 <script lang="ts">
-	import type { StatCard } from '$lib/interfaces/card';
 	import { Link2, ScanQrCode, TrendingUp, Clock } from '@lucide/svelte';
 
-	export let values: StatCard;
-
+	let { totalLinks = 0, totalScans = 0, totalClicks = 0, avgDailyClicks = 0 } = $props();
 	let stats = [
 		{
 			title: 'No. of Links',
-			value: values.totalLinks,
+			value: totalLinks,
 			description: 'Total links created by you',
 			icon: Link2
 		},
 		{
 			title: 'QR Scans',
-			value: values.totalScans,
+			value: totalScans,
 			description: 'Number of QR codes scanned',
 			icon: ScanQrCode
 		},
 		{
 			title: 'Total Clicks',
-			value: values.totalClicks,
+			value: totalClicks,
 			description: 'All-time click count',
 			icon: TrendingUp
 		},
 		{
 			title: 'Avg Daily Clicks',
-			value: values.avgDailyClicks,
+			value: avgDailyClicks,
 			description: 'Average clicks per day',
 			icon: Clock
 		}

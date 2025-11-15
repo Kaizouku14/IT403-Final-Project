@@ -11,7 +11,7 @@
 	import { Folder as FolderIcon } from '@lucide/svelte';
 
 	export let data: PageData;
-	$: ({ user, form, folders } = data);
+	$: ({ user, form, folders, summary } = data);
 
 	let query = '';
 	$: filteredData = query
@@ -29,7 +29,7 @@
 		<WelcomeBanner {user} />
 		<FolderForm {form} />
 	</div>
-	<StatCard values={{ totalLinks: 10, totalScans: 10, totalClicks: 10, avgDailyClicks: 10 }} />
+	<StatCard {...summary} />
 
 	<InputGroup.Root class="sm:max-w-96">
 		<InputGroup.Input placeholder="Search..." bind:value={query} />
