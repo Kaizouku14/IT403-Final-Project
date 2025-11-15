@@ -2,9 +2,9 @@ import { db, eq, and, sql } from '../server/db';
 import { links as LinksTable, clicks as ClicksTable } from '../server/db/schema';
 import { categorizeReferrer, countToArray } from '$lib/utils';
 import { UAParser } from 'ua-parser-js';
-import { geolocation } from '@vercel/functions';
 import bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
+import { getGeolocation } from '$lib/server/geolocation';
 
 export const hashPassword = async (password: string): Promise<string> => {
 	const SALT_ROUNDS = 12;
@@ -76,14 +76,14 @@ export const trackClick = async (
 		const userAgent = request.headers.get('user-agent') ?? 'unknown';
 		const referer = request.headers.get('referer') ?? '';
 		const { device, os, browser } = new UAParser(userAgent).getResult();
-		const { city, country, countryRegion } = geolocation(request);
+		const { city, country, region } = await getGeolocation(ip);
 
 		await db.insert(ClicksTable).values({
 			id: generateId(),
 			linkId,
 			country,
 			city,
-			region: countryRegion,
+			region,
 			referrer: referer,
 			referrerSource: categorizeReferrer(referer),
 			device: device?.type ?? 'Desktop',
