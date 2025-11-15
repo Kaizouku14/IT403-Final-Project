@@ -1,6 +1,6 @@
-import { db, eq, and } from '../server/db';
+import { db, eq, and, sql } from '../server/db';
 import { links as LinksTable, clicks as ClicksTable } from '../server/db/schema';
-import { categorizeReferrer } from '$lib/utils';
+import { categorizeReferrer, countToArray } from '$lib/utils';
 import { UAParser } from 'ua-parser-js';
 import { geolocation } from '@vercel/functions';
 import bcrypt from 'bcrypt';
@@ -76,17 +76,17 @@ export const trackClick = async (
 		const userAgent = request.headers.get('user-agent') ?? 'unknown';
 		const referer = request.headers.get('referer') ?? '';
 		const { device, os, browser } = new UAParser(userAgent).getResult();
-		const { city, country, region } = geolocation(request);
+		const { city, country, countryRegion } = geolocation(request);
 
 		await db.insert(ClicksTable).values({
 			id: generateId(),
 			linkId,
 			country,
 			city,
-			region,
+			region: countryRegion,
 			referrer: referer,
 			referrerSource: categorizeReferrer(referer),
-			device: device?.type ?? 'desktop',
+			device: device?.type ?? 'Desktop',
 			os: os?.name ?? 'unknown',
 			browser: browser?.name ?? 'unknown',
 			ipAddress: ip,
@@ -99,62 +99,33 @@ export const trackClick = async (
 	}
 };
 
-// export const getLinkAnalytics = async (linkId: string, days = 30) => {
-// 	const startDate = Math.floor(Date.now() / 1000) - days * 24 * 60 * 60;
+export const getLinkAnalytics = async (linkId: string, days = 30) => {
+	const startDate = Math.floor(Date.now() / 1000) - days * 24 * 60 * 60;
 
-// 	const clickData = await db.query.clicks.findMany({
-// 		where: and(eq(ClicksTable.linkId, linkId), sql`${ClicksTable.clickedAt} >= ${startDate}`)
-// 	});
+	const clickData = await db.query.clicks.findMany({
+		where: and(eq(ClicksTable.linkId, linkId), sql`${ClicksTable.clickedAt} >= ${startDate}`)
+	});
 
-// 	// Aggregate data
-// 	const totalClicks = clickData.length;
-// 	const qrScans = clickData.filter((c) => c.isQrScan).length;
+	// Aggregate data
+	const totalClicks = clickData.length;
+	const qrScans = clickData.filter((c) => c.isQrScan).length;
 
-// 	// Device breakdown
-// 	const deviceBreakdown = clickData.reduce(
-// 		(acc, click) => {
-// 			acc[click.device || 'unknown'] = (acc[click.device || 'unknown'] || 0) + 1;
-// 			return acc;
-// 		},
-// 		{} as Record<string, number>
-// 	);
+	//Analytics breakdown
+	const deviceBreakdown = countToArray(clickData, (c) => c.device || 'unknown');
+	const referrerBreakdown = countToArray(clickData, (c) => c.referrerSource || 'direct');
+	const countryBreakdown = countToArray(clickData, (c) => c.country || 'Unknown');
+	const clicksByDay = countToArray(clickData, (c) => c.clickedAt.toISOString().split('T')[0]);
 
-// 	// Referrer breakdown
-// 	const referrerBreakdown = clickData.reduce(
-// 		(acc, click) => {
-// 			const source = click.referrerSource || 'direct';
-// 			acc[source] = (acc[source] || 0) + 1;
-// 			return acc;
-// 		},
-// 		{} as Record<string, number>
-// 	);
+	const avgDaily = days > 0 ? Math.round(totalClicks / days) : totalClicks;
 
-// 	// Country breakdown
-// 	const countryBreakdown = clickData.reduce(
-// 		(acc, click) => {
-// 			const country = click.country || 'unknown';
-// 			acc[country] = (acc[country] || 0) + 1;
-// 			return acc;
-// 		},
-// 		{} as Record<string, number>
-// 	);
-
-// 	// Clicks over time (daily)
-// 	const clicksByDay = clickData.reduce(
-// 		(acc, click) => {
-// 			const date = click.clickedAt.toISOString().split('T')[0];
-// 			acc[date] = (acc[date] || 0) + 1;
-// 			return acc;
-// 		},
-// 		{} as Record<string, number>
-// 	);
-
-// 	return {
-// 		totalClicks,
-// 		qrScans,
-// 		deviceBreakdown,
-// 		referrerBreakdown,
-// 		countryBreakdown,
-// 		clicksByDay
-// 	};
-// };
+	return {
+		totalClicks,
+		qrScans,
+		totalCountries: countryBreakdown.length,
+		avgDaily,
+		deviceBreakdown,
+		referrerBreakdown,
+		countryBreakdown,
+		clicksByDay
+	};
+};

@@ -1,6 +1,7 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { db, eq, and } from '$lib/server/db';
 import { links as LinksTable } from '$lib/server/db/schema/index.ts';
+import { getLinkAnalytics } from '$lib/helper/helper';
 
 export const DELETE: RequestHandler = async ({ params }) => {
 	const { folderId, linkId } = params;
@@ -27,4 +28,15 @@ export const DELETE: RequestHandler = async ({ params }) => {
 
 		return new Response('An unexpected error occurred', { status: 500 });
 	}
+};
+
+export const GET: RequestHandler = async ({ params, url }) => {
+	const { linkId } = params;
+	const days = Number(url.searchParams.get('days')) || 30;
+
+	if (!linkId) return new Response('Missing linkId', { status: 400 });
+
+	const analytics = await getLinkAnalytics(linkId, days);
+
+	return new Response(JSON.stringify(analytics));
 };

@@ -1,33 +1,21 @@
-interface ClicksByDay {
-	date: string;
-	clicks: number;
-}
+import type { InferSelectModel } from 'drizzle-orm';
+import type { clicks } from '$lib/server/db/schema/links';
 
-interface Devices {
-	name: string;
+export type Click = InferSelectModel<typeof clicks>;
+
+export interface CountWithPercentage<T extends string = string> {
+	key: T;
 	count: number;
 	percentage: number;
 }
 
-interface TopReferrers {
-	source: string;
-	count: number;
-	percentage: number;
-}
-
-interface TopCountries {
-	country: string;
-	count: number;
-	percentage: number;
-}
-
-export interface AnalyticsBreakdownProps {
+export interface AnalyticsBreakdown {
 	totalClicks: number;
 	qrScans: number;
 	countries: number;
 	avgDaily: number;
-	clicksByDay: ClicksByDay[];
-	devices: Devices[];
-	topReferrers: TopReferrers[];
-	topCountries: TopCountries[];
+	clicksByDay: CountWithPercentage[];
+	deviceBreakdown: CountWithPercentage[];
+	referrerBreakdown: CountWithPercentage[];
+	countryBreakdown: CountWithPercentage[];
 }

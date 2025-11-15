@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { formatDistanceToNow } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
+import type { Click, CountWithPercentage } from './interfaces/analytics';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -64,6 +65,26 @@ export const isDeadlinePassed = (deadline: Date) => {
 };
 
 export const formatAgo = (d: Date) => formatDistanceToNow(d, { addSuffix: true });
+
+export const countToArray = <T extends string>(
+	items: Click[],
+	getKey: (item: Click) => T
+): CountWithPercentage<T>[] => {
+	const map = new Map<T, number>();
+
+	for (const item of items) {
+		const key = getKey(item);
+		map.set(key, (map.get(key) || 0) + 1);
+	}
+
+	const total = Array.from(map.values()).reduce((a, b) => a + b, 0);
+
+	return Array.from(map.entries()).map(([key, count]) => ({
+		key,
+		count,
+		percentage: total ? Math.round((count / total) * 100) : 0
+	}));
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type WithoutChild<T> = T extends { child?: any } ? Omit<T, 'child'> : T;
