@@ -13,12 +13,12 @@
 	const handleLogOut = async () => {
 		try {
 			toast.promise(authClient.signOut(), {
-				pending: 'Logging out...',
+				loading: 'Logging out...',
 				success: () => {
 					goto(resolve(pageRoutes.LOGIN, {}));
 					return 'Successfully logged out';
 				},
-				rejected: (error) => error.message
+				rejected: (error: unknown) => error.message
 			});
 		} catch (error) {
 			toast.error((error as Error).message);
