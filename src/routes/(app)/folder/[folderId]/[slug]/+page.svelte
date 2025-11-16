@@ -32,7 +32,7 @@
 	<title>{folderName} | Folder</title>
 </svelte:head>
 
-<section class="flex min-h-[80vh] w-full flex-col gap-6 p-6">
+<section class="flex min-h-[80vh] w-full flex-col gap-6 md:p-6">
 	<div class="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
 		<div class="flex items-center gap-3">
 			<Button
@@ -53,19 +53,25 @@
 			</div>
 		</div>
 
-		<div class="flex items-center gap-2">
+		<div class=" hidden items-center gap-2 md:flex">
 			<LinkForm {form} />
 			<DeleteFolder {folderId} {folderName} />
 		</div>
 	</div>
 
-	<InputGroup.Root class="sm:max-w-120">
-		<InputGroup.Input placeholder="Search..." bind:value={query} />
-		<InputGroup.Addon>
-			<SearchIcon />
-		</InputGroup.Addon>
-		<InputGroup.Addon align="inline-end">{filteredData.length} results</InputGroup.Addon>
-	</InputGroup.Root>
+	<div class="flex items-center gap-2">
+		<InputGroup.Root class="sm:max-w-120">
+			<InputGroup.Input placeholder="Search..." bind:value={query} />
+			<InputGroup.Addon>
+				<SearchIcon />
+			</InputGroup.Addon>
+			<InputGroup.Addon align="inline-end">{filteredData.length} results</InputGroup.Addon>
+		</InputGroup.Root>
+		<div class=" flex items-center gap-2 md:hidden">
+			<LinkForm {form} />
+			<DeleteFolder {folderId} {folderName} />
+		</div>
+	</div>
 
 	<ScrollArea class="h-96 md:h-120 ">
 		{#if filteredData.length > 0}

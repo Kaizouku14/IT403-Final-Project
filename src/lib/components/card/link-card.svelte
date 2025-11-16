@@ -35,18 +35,17 @@
 </script>
 
 <Card.Root
-	class="group relative max-w-full cursor-pointer overflow-hidden rounded-2xl border border-border/60 bg-linear-to-br from-background to-background/95 p-5 shadow-2xs transition-all
- duration-300 hover:border-primary/40"
+	class="group relative max-w-full cursor-pointer overflow-hidden rounded-2xl border border-border/60 bg-linear-to-br from-background to-background/95 p-5 shadow-2xs transition-all duration-300 hover:border-primary/40 md:p-5"
 	style={`border-top: 3px solid ${links.folderColor}`}
 >
 	<div class="absolute top-4 right-4 flex items-center gap-2">
 		{#if links.isActive}
-			<Badge class="bg-green-500/10 text-xs font-medium text-green-600 ring-1 ring-green-500/20 ">
+			<Badge class="bg-green-500/10 text-xs font-medium text-green-600 ring-1 ring-green-500/20">
 				<div class="size-1.5 animate-pulse rounded-full bg-green-500"></div>
 				Active
 			</Badge>
 		{:else}
-			<Badge class="bg-gray-500/10 text-xs font-medium text-gray-600 ring-1 ring-gray-500/20 ">
+			<Badge class="bg-gray-500/10 text-xs font-medium text-gray-600 ring-1 ring-gray-500/20">
 				<div class="size-1.5 rounded-full bg-gray-500"></div>
 				Inactive
 			</Badge>
@@ -54,26 +53,31 @@
 		<EditLink password={links.protected} isActive={links.isActive} />
 	</div>
 
-	<Card.Header class="space-y-3 ">
-		<div>
-			<div class="flex items-start justify-between pr-20">
+	<Card.Header class="space-y-3">
+		<div class="flex flex-col gap-2">
+			<div class="flex items-start justify-between pr-16">
 				<Card.Title
-					class="text-xl font-bold text-foreground transition-colors group-hover:text-primary"
+					class="text-lg font-bold text-foreground transition-colors group-hover:text-primary sm:text-xl"
 				>
 					{links.title}
 				</Card.Title>
 			</div>
 
-			<div class="mt-2 flex items-center gap-2">
-				<div class="flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-1.5 dark:bg-blue-950/30">
-					<span class="font-mono text-sm font-semibold text-blue-600 dark:text-blue-400">
+			<div class="mt-1 flex flex-wrap items-center gap-2">
+				<div
+					class="flex w-full items-center gap-2 rounded-lg bg-blue-50 px-3 py-1.5 sm:w-auto dark:bg-blue-950/30"
+				>
+					<span
+						class="truncate font-mono text-[0.75rem] font-semibold text-blue-600 sm:text-sm dark:text-blue-400"
+					>
 						{env.PUBLIC_BASE_URL}/{links.shortCode}
 					</span>
+
 					<Button
 						variant="ghost"
 						size="icon"
 						onclick={handleCopy}
-						class="size-7 hover:bg-blue-100 dark:hover:bg-blue-900/50"
+						class="size-7 shrink-0 hover:bg-blue-100 dark:hover:bg-blue-900/50"
 						title="Copy link"
 					>
 						<Copy class="size-3.5" />
@@ -90,33 +94,42 @@
 				{/if}
 			</div>
 
-			<Card.Description class="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
+			<Card.Description
+				class="mt-2 flex items-center gap-1.5 truncate text-xs text-muted-foreground"
+			>
 				<Link2 class="size-3 shrink-0" />
 				<span class="truncate">{links.destinationUrl}</span>
 			</Card.Description>
 		</div>
 	</Card.Header>
 
-	<div class="flex items-center justify-between border-t border-border/40 px-6 pt-4">
-		<div class="flex items-center gap-6">
+	<div
+		class="flex flex-col gap-4 border-t border-border/40 px-4 pt-4 sm:px-6 md:flex-row md:items-center md:justify-between"
+	>
+		<div class="flex gap-6">
 			<div class="flex items-center gap-2">
-				<div class="flex size-10 items-center justify-center rounded-lg bg-primary/10">
+				<div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
 					<MousePointerClick class="size-4 text-primary" />
 				</div>
 				<div>
-					<div class="text-lg font-bold text-foreground">{links.noOfClicks}</div>
+					<div class="text-sm font-bold text-foreground md:text-lg">{links.noOfClicks}</div>
 					<div class="text-xs text-muted-foreground">Total clicks</div>
 				</div>
 			</div>
 
 			{#if links.expireAt}
 				<div class="flex items-center gap-2">
-					<div class="flex size-10 items-center justify-center rounded-lg bg-orange-500/10">
+					<div
+						class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-orange-500/10"
+					>
 						<Clock class="size-4 text-orange-600" />
 					</div>
 					<div>
 						<div
-							class={cn('text-sm font-semibold ', isPassed ? 'text-red-600' : 'text-foreground')}
+							class={cn(
+								'text-xs font-semibold md:text-sm',
+								isPassed ? 'text-red-600' : 'text-foreground'
+							)}
 						>
 							{format(links.expireAt, 'MMM d, yyyy')}
 						</div>
@@ -128,7 +141,7 @@
 			{/if}
 		</div>
 
-		<div class="flex items-center gap-1">
+		<div class="flex items-center justify-center gap-1 md:justify-end">
 			<Button
 				variant="ghost"
 				size="icon"
@@ -151,12 +164,13 @@
 	</div>
 
 	<Card.Footer
-		class="flex w-full items-center justify-between border-t border-border/40 pt-3 text-xs text-muted-foreground"
+		class="hidden items-center  justify-between gap-2 border-t border-border/40 pt-3 text-xs text-muted-foreground md:flex"
 	>
 		<span class="flex items-center gap-1.5">
 			<Calendar class="size-3" />
 			Created {format(links.createdAt, 'MMM d, yyyy')}
 		</span>
+
 		{#if links.updatedAt}
 			<span class="flex items-center gap-1.5">
 				<Clock class="size-3" />

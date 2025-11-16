@@ -33,7 +33,7 @@
 <Dialog.Root {open} onOpenChange={(e) => (open = e.valueOf())}>
 	<Dialog.Trigger class={buttonVariants({ variant: 'default' })}>
 		<PlusIcon class="size-4" />
-		<span class="font-bold">Create Link</span>
+		<span class="hidden font-bold md:flex">Create Link</span>
 	</Dialog.Trigger>
 	<Dialog.Content>
 		<Dialog.Header>

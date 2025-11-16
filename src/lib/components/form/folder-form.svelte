@@ -12,7 +12,7 @@
 	import { Textarea } from '../ui/textarea';
 	import { cn } from '$lib/utils';
 
-	let data: { form: SuperValidated<Infer<FormSchema>> } = $props();
+	let data: { form: SuperValidated<Infer<FormSchema>>; style: string } = $props();
 	let open = $state(false);
 	const form = superForm(data.form, {
 		validators: zod4Client(formSchema),
@@ -34,9 +34,9 @@
 
 <!-- Not bindable, I handle it manually via onOpenChange -->
 <Dialog.Root {open} onOpenChange={(e) => (open = e.valueOf())}>
-	<Dialog.Trigger class={buttonVariants({ variant: 'default' })}>
+	<Dialog.Trigger class={buttonVariants({ variant: 'default', class: data.style })}>
 		<FolderPlus class="size-4" />
-		<span class="font-bold">Create Folder</span>
+		<span class="hidden font-bold md:flex">Create Folder</span>
 	</Dialog.Trigger>
 	<Dialog.Content class="sm:max-w-md">
 		<Dialog.Header>

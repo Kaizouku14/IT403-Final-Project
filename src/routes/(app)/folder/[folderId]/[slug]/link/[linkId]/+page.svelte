@@ -40,7 +40,7 @@
 	<title>{link.name}</title>
 </svelte:head>
 
-<section class="flex min-h-[80vh] w-full flex-col gap-6 p-6">
+<section class="flex min-h-[80vh] w-full flex-col gap-6 md:p-6">
 	<div class="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
 		<div class="flex items-center gap-3">
 			<Button
@@ -67,16 +67,14 @@
 			</div>
 		</div>
 
-		<div class="flex items-center gap-2">
-			<Select.Root type="single" bind:value={days} onValueChange={(value) => loadAnalytics(value)}>
-				<Select.Trigger class="w-[180px]">Last {days} Days</Select.Trigger>
-				<Select.Content>
-					<Select.Item value="7">Last 7 Days</Select.Item>
-					<Select.Item value="30">Last 30 Days</Select.Item>
-					<Select.Item value="90">Last 90 Days</Select.Item>
-				</Select.Content>
-			</Select.Root>
-		</div>
+		<Select.Root type="single" bind:value={days} onValueChange={(value) => loadAnalytics(value)}>
+			<Select.Trigger class="w-[180px]">Last {days} Days</Select.Trigger>
+			<Select.Content>
+				<Select.Item value="7">Last 7 Days</Select.Item>
+				<Select.Item value="30">Last 30 Days</Select.Item>
+				<Select.Item value="90">Last 90 Days</Select.Item>
+			</Select.Content>
+		</Select.Root>
 	</div>
 	{#if analyticsData}
 		<LinkStatsCard

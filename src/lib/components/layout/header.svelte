@@ -11,19 +11,22 @@
 	export let user;
 
 	const handleLogOut = async () => {
-		toast.loading('Logging out...');
-
 		try {
-			await authClient.signOut();
-			toast.success('Successfully logged out.');
-			goto(resolve(pageRoutes.LOGIN, {}));
+			toast.promise(authClient.signOut(), {
+				pending: 'Logging out...',
+				success: () => {
+					goto(resolve(pageRoutes.LOGIN, {}));
+					return 'Successfully logged out';
+				},
+				rejected: (error) => error.message
+			});
 		} catch (error) {
 			toast.error((error as Error).message);
 		}
 	};
 </script>
 
-<header class="flex h-15 w-full items-center justify-between p-6">
+<header class="flex h-15 w-full items-center justify-between md:p-6">
 	<a href={resolve(pageRoutes.DASHBOARD, {})}>
 		<h1 class="text-2xl font-black">Zynkly</h1>
 	</a>

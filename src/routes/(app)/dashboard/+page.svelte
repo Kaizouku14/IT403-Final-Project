@@ -24,20 +24,23 @@
 	<meta name="dashboard" content="Dashboard page" />
 </svelte:head>
 
-<section class="flex w-full flex-col gap-6 px-6 py-4">
+<section class="flex w-full flex-col gap-6 py-4 md:px-6">
 	<div class="flex items-center justify-between">
 		<WelcomeBanner {user} />
-		<FolderForm {form} />
+		<FolderForm {form} style="hidden md:flex" />
 	</div>
 	<StatCard {...summary} />
 
-	<InputGroup.Root class="sm:max-w-96">
-		<InputGroup.Input placeholder="Search..." bind:value={query} />
-		<InputGroup.Addon>
-			<SearchIcon />
-		</InputGroup.Addon>
-		<InputGroup.Addon align="inline-end">{filteredData.length} results</InputGroup.Addon>
-	</InputGroup.Root>
+	<div class="flex items-center gap-2">
+		<InputGroup.Root class="sm:max-w-96">
+			<InputGroup.Input placeholder="Search..." bind:value={query} />
+			<InputGroup.Addon>
+				<SearchIcon />
+			</InputGroup.Addon>
+			<InputGroup.Addon align="inline-end">{filteredData.length} results</InputGroup.Addon>
+		</InputGroup.Root>
+		<FolderForm {form} style="flex md:hidden" />
+	</div>
 
 	<ScrollArea class="max-h-96">
 		{#if filteredData.length > 0}
