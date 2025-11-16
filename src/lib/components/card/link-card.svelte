@@ -10,6 +10,7 @@
 		MousePointerClick,
 		Link2
 	} from '@lucide/svelte';
+	import { Badge } from '$lib/components/ui/badge/index.ts';
 	import { cn, formatAgo, isDeadlinePassed } from '$lib/utils';
 	import type { Links } from '$lib/interfaces/link.ts';
 	import { format } from 'date-fns';
@@ -20,6 +21,7 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { pageRoutes } from '$lib/helper/enums';
+	import EditLink from '$lib/components/dialog/edit-link.svelte';
 
 	export let links: Links;
 	export let slug: string;
@@ -37,22 +39,19 @@
  duration-300 hover:border-primary/40"
 	style={`border-top: 3px solid ${links.folderColor}`}
 >
-	<div class="absolute top-4 right-4">
+	<div class="absolute top-4 right-4 flex items-center gap-2">
 		{#if links.isActive}
-			<div
-				class="flex items-center gap-1.5 rounded-full bg-green-500/10 px-2.5 py-1 text-xs font-medium text-green-600 ring-1 ring-green-500/20"
-			>
+			<Badge class="bg-green-500/10 text-xs font-medium text-green-600 ring-1 ring-green-500/20 ">
 				<div class="size-1.5 animate-pulse rounded-full bg-green-500"></div>
 				Active
-			</div>
+			</Badge>
 		{:else}
-			<div
-				class="flex items-center gap-1.5 rounded-full bg-gray-500/10 px-2.5 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/20"
-			>
+			<Badge class="bg-gray-500/10 text-xs font-medium text-gray-600 ring-1 ring-gray-500/20 ">
 				<div class="size-1.5 rounded-full bg-gray-500"></div>
 				Inactive
-			</div>
+			</Badge>
 		{/if}
+		<EditLink password={links.protected} isActive={links.isActive} />
 	</div>
 
 	<Card.Header class="space-y-3 ">
