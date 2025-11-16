@@ -15,7 +15,7 @@
 		<Ellipsis class="size-4" />
 	</DropdownMenu.Trigger>
 
-	<DropdownMenu.Content class="w-48">
+	<DropdownMenu.Content class="w-40">
 		<DropdownMenu.Group>
 			<DropdownMenu.Label class="text-xs text-muted-foreground">Menu</DropdownMenu.Label>
 
