@@ -143,7 +143,7 @@ export const actions: Actions = {
 						shortCode: LinksTable.shortCode
 					});
 
-				const qrUrl = `${env.PUBLIC_URL}/${returning.shortCode}?qr=true`;
+				const qrUrl = `${env.PUBLIC_BASE_URL}/${returning.shortCode}?qr=true`;
 				const qrDataUrl = await QRCode.toDataURL(qrUrl, {
 					width: 300,
 					margin: 2,

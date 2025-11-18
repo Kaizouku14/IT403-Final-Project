@@ -18,7 +18,7 @@
 					goto(resolve(pageRoutes.LOGIN, {}));
 					return 'Successfully logged out';
 				},
-				rejected: (error: unknown) => error.message
+				error: (error: unknown) => error.message
 			});
 		} catch (error) {
 			toast.error((error as Error).message);
